@@ -1,0 +1,43 @@
+/* Style Sheet for ePub Books */
+
+/* Set margins at 2% (This gives a white border around the book) */
+
+body {margin-left:2%;
+	margin-right:2%;
+	margin-top:2%;
+	margin-bottom:2%;}
+
+
+p, li, tr, td {
+	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+	font-size:10pt;
+}
+
+p {
+	margin-left:0;
+	margin-right:0;
+	margin-top:0;
+	margin-bottom:6pt;
+}
+li{
+	margin-bottom:6pt;
+}
+
+ h1 {
+	text-align: center;
+	font-family: Cambria, Georgia, serif;
+	font-size:18pt;
+	color:rgb(99,36,35);
+}
+h2 {
+	text-align: left;
+	font-family: Cambria, Georgia, serif;
+	font-size:14pt;
+	color:rgb(148,54,52);
+}
+h3 {
+	text-align: left;
+	font-family: Cambria, Georgia, serif;
+	font-size:10pt;
+	color:rgb(192,80,77);
+}

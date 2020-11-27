@@ -1,13 +1,6 @@
 //SOURCE : http://planzero.org/blog/2013/03/07/spidering_the_web_with_casperjs
 // Adaptations : Arnaud d'Alayer
 
-// Set the start URL
-var startUrl = 'https://wiki.umontreal.ca/pages/viewpage.action?pageId=124093923';
-//var startUrl = 'https://wiki.umontreal.ca/pages/viewpage.action?pageId=124097391';
-
-// URL variables
-var visitedUrls = [], pendingUrls = [];
-
 // Create instances
 var casper = require('casper').create({
 	viewportSize: {
@@ -18,7 +11,11 @@ var casper = require('casper').create({
 var utils = require('utils');
 var helpers = require('./helpers');
 
+// Set the start URL
+var startUrl = casper.cli.get("url");
 
+// URL variables
+var visitedUrls = [], pendingUrls = [];
 
 //captures d'ecran
 var compteurCaptureEcran = 0;
@@ -38,7 +35,7 @@ pageXML += '\n<guide>';
 
 
 var fs = require('fs');
-var filename = 'out/content.xml';
+var filename = casper.cli.get("out");
 
 //
 function escapeHtml(unsafe) {
@@ -80,14 +77,26 @@ function spider(url) {
 		});
 		
 		
-		var pageContenu = this.evaluate(function() {
-			var rubriques = "";
+		var rubriques = this.evaluate(function() {
+			var content = "";
 			var contenu = document.getElementsByClassName("rubrique");
 			
 			for (var i = 0; i < contenu.length; ++i){
-				rubriques += contenu[i].innerHTML;
+				content += contenu[i].innerHTML;
 			}
-			return rubriques;
+			return content;
+			//console.log(contenu[0].innerHTML);
+			//return contenu[0].innerHTML;
+			//return $('<div/>').html(contenu).text();
+		});
+		var basDePage = this.evaluate(function() {
+			var content = "";
+			var contenu = document.getElementsByClassName("bas-de-page");
+			
+			for (var i = 0; i < contenu.length; ++i){
+				content += contenu[i].innerHTML;
+			}
+			return content;
 			//console.log(contenu[0].innerHTML);
 			//return contenu[0].innerHTML;
 			//return $('<div/>').html(contenu).text();
@@ -95,10 +104,16 @@ function spider(url) {
 		pageXML += '\n\t<page>';
 		pageXML += '\n\t\t<url>' + escapeHtml(url) + '</url>';
 		pageXML += '\n\t\t<title>' + escapeHtml(pageTitle) + '</title>';
-		pageXML += '\n\t\t<title>' + escapeHtml(pageTitre) + '</title>';
-		pageXML += '\n\t\t<contenu>';
-		pageXML += '\n\t\t\t' + pageContenu;
-		pageXML += '\n\t\t</contenu>';
+		pageXML += '\n\t\t<titre>' + escapeHtml(pageTitre) + '</titre>';
+		pageXML += '\n\t\t<rubriques>';
+		pageXML += '\n\t\t\t' + rubriques;
+		pageXML += '\n\t\t</rubriques>';
+		if (basDePage){
+			
+			pageXML += '\n\t\t<bas-de-page>';
+			pageXML += '\n\t\t\t' + basDePage;
+			pageXML += '\n\t\t</bas-de-page>';
+		}
 		pageXML += '\n\t</page>';
 
 

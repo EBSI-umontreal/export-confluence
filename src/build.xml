@@ -1,68 +1,202 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="Confluence - Migration des guides de l'EBSI en PDF" basedir="." default="about">
-	<property name="fichier-output" value="./out/content.xml"/>
+<project name="Confluence - Migration des guides de l'EBSI en PDF/epub" basedir="." default="choix">
+	
+	<property name="dossier-output" value="./out"/>
+	
+	<property name="epub-template" value="./epub_template"/>
+	<property name="epub-output" value="./out/epub"/>
 	
 	
 	<target name="about" description="À propos">
 		<echo>+-----------------------------------------------------------+</echo>
-		<echo>      Confluence - Migration des guides de l'EBSI en PDF     </echo>
+		<echo>   Confluence - Migration des guides de l'EBSI en PDF/epub   </echo>
 		<echo>+-----------------------------------------------------------+</echo>
 		<echo> EBSI - Universite de Montreal</echo>
-		<echo> Arnaud d'Alayer 2016</echo>
+		<echo> Arnaud d'Alayer 2016-2017</echo>
 		<echo />
-		<echo> Version : 20161215</echo>
+		<echo> Version : 20171205</echo>
 		<echo>+-----------------------------------------------------------+</echo>
 	</target>
 	
-	
 	<!-- ==========================================================
-		 =                    Tâche importation                   =
+		 =                    Tâche choix                   =
 		 ==========================================================
 	-->
-	<target name="importation" depends="about, exportXML, nettoyer, well-formed">
-		<echo>FIN!</echo>
+	<target name="choix" depends="about">
+		<echo>Choix du guide a exporter :</echo>
+		<echo>1) 1er cycle</echo>
+		<echo>2) 2e cycle</echo>
+		<echo>3) docto</echo>
+		<echo>4) Personnel</echo>
+		<input message="Votre choix?" validargs="1,2,3,4" addproperty="guideAExporter"/>
+		<condition property="choix.1">
+			<equals arg1="1" arg2="${guideAExporter}"/>
+		</condition>
+		<condition property="choix.2">
+			<equals arg1="2" arg2="${guideAExporter}"/>
+		</condition>
+		<condition property="choix.3">
+			<equals arg1="3" arg2="${guideAExporter}"/>
+		</condition>
+		<condition property="choix.4">
+			<equals arg1="4" arg2="${guideAExporter}"/>
+		</condition>
+		
+		
+		<antcall target="export.1ercycle"/>
+		<antcall target="export.2ecycle"/>
+		<antcall target="export.docto"/>
+		<antcall target="export.pers"/>
 	</target>
 	
+	
+	<target name="export.1ercycle" if="choix.1">
+		<echo>Exportation du guide du 1er cycle...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124093923"/>
+		<property name="xml-output" value="${dossier-output}/guide1ercycle.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/guide1ercycle.epub"/>
+		<antcall target="exportation"/>
+	</target>
+	
+	<target name="export.2ecycle" if="choix.2">
+		<echo>Exportation du guide du 2e cycle...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124093925"/>
+		<property name="xml-output" value="${dossier-output}/guide2ecycle.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
+		<antcall target="exportation"/>
+	</target>
+	
+	<target name="export.docto" if="choix.3">
+		<echo>Exportation du guide du docto...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124097476"/>
+		<property name="xml-output" value="${dossier-output}/guidedocto.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
+		<antcall target="exportation"/>
+	</target>
+	
+	<target name="export.pers" if="choix.4">
+		<echo>Exportation du guide du personnel...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124098127"/>
+		<property name="xml-output" value="${dossier-output}/guidepers.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
+		<antcall target="exportation"/>
+	</target>
+	
+	
 	<!-- ==========================================================
-		 =                    Tâche importation                   =
+		 =                    Tâche exportation                   =
 		 ==========================================================
 	-->
-	<target name="exportXML">
-		<echo>Exportation des pages du guide dans un fichier XML...</echo>
+	<target name="exportation" depends="xml, epub">
+		<echo>exportation</echo>
+	</target>
+	
+	
+	<!-- ==========================================================
+		 =                        Tâches XML                      =
+		 ==========================================================
+	-->
+	<target name="xml" depends="XML_exportation, XML_nettoyer, XML_well-formed">
+		<echo>XML : Fin!</echo>
+	</target>
+	
+	
+	<target name="XML_exportation">
+		<echo>XML : Exportation des pages du guide dans un fichier XML...</echo>
 		<exec dir="${basedir}" executable="cmd.exe">
-			<arg line="/c casperjs transfert-guide_20161215.js"/>
+			<arg line="/c casperjs transfert-guide_20171205.js --url='${wiki-url}' --out='${xml-output}'"/>
 		</exec>
 	</target>
 	
-	<!-- ==========================================================
-		  =                    Tâche nettoyer                      =
-		  ==========================================================
-	-->
-	<target name="nettoyer">
-		<echo>Correction du fichier XML...</echo>
+	<target name="XML_nettoyer">
+		<echo>XML : Correction du balisage</echo>
 		<!-- corriger les br non fermés -->
-		<replaceregexp file="${fichier-output}" flags="g">
+		<replaceregexp file="${xml-output}" flags="g">
 			<regexp pattern="&lt;br&gt;"/>
 			<substitution expression="&lt;br/&gt;"/>
 		</replaceregexp>
 		<!-- corriger les hr non fermés -->
-		<replaceregexp file="${fichier-output}" flags="g">
+		<replaceregexp file="${xml-output}" flags="g">
 			<regexp pattern="&lt;hr&gt;"/>
 			<substitution expression="&lt;hr/&gt;"/>
 		</replaceregexp>
 		<!-- corriger les img non fermés -->
-		<replaceregexp file="${fichier-output}" flags="g">
+		<replaceregexp file="${xml-output}" flags="g">
 			<regexp pattern="&lt;img([^>]*)&gt;"/>
 			<substitution expression="&lt;img\1/&gt;"/>
 		</replaceregexp>
 	</target>
 	
+	<target name="XML_well-formed">
+		<echo>XML : Validation du fichier XML...</echo>
+		<xmlvalidate file="${xml-output}" lenient="true"/>
+	</target>
+	
+	
 	<!-- ==========================================================
-		  =                   Tâche well-formed                    =
+		 =                      Tâches ePub                       =
+		 ==========================================================
+	-->
+	<target name="epub" depends="epub_structure, epub_pages, epub_toc, epub_zip">
+		<echo>ePub : Fin!</echo>
+	</target>
+	
+	<target name="epub_structure">
+		<echo>ePub : Creation de la structure vide</echo>
+		
+		<delete dir="${epub-output}"/>
+		<copy todir="${epub-output}" >
+			<fileset dir="${epub-template}" includes="**"/>
+		</copy>
+		
+		
+	</target>
+	
+	<target name="epub_pages">
+		<echo>ePub : Creation des pages XHTML</echo>
+		<xslt-saxon9
+			in="${xml-output}"
+			style="epub_pages.xsl"
+			destdir="${epub-output}/OEBPS/tempo1.txt"/>
+		<delete file="${epub-output}/OEBPS/tempo1.txt"/>
+	</target>
+		
+	<target name="epub_toc">
+		<echo>ePub : Creation du fichier de table des matieres</echo>
+		<xslt in="${xml-output}" style="epub_toc.xsl" out="${epub-output}/OEBPS/content.opf" force="yes"/>
+	</target>
+	
+	<target name="epub_zip">
+		<echo>ePub : Creation du conteneur .epub</echo>
+		<zip destfile="${epub-output.fichier}" basedir="${epub-output}"/>
+	</target>
+	
+	
+	
+	<!-- ===========================================================
+		  =                      Moteurs XSLT                      =
 		  ==========================================================
 	-->
-	<target name="well-formed">
-		<echo>Validation du fichier XML...</echo>
-		<xmlvalidate file="${fichier-output}" lenient="true"/>
-	</target>
+	<!-- http://vocaro.com/trevor/blog/2007/01/08/how-to-use-saxon-with-ant/ -->
+	<macrodef name="xslt-saxon9">
+		<attribute name="in"/>
+		<attribute name="destdir"/>
+		<attribute name="style"/>
+		<sequential>
+			<echo>Transformation XSLT avec Saxon 9 : in=@{in} out=@{destdir} style=@{style}</echo>
+			<java classname="net.sf.saxon.Transform"
+				classpath="./saxonb9-1-0-8j/saxon9.jar"
+				fork="true">
+				<arg value="-o:@{destdir}"/>
+				<arg value="@{in}"/>
+				<arg value="@{style}"/>
+			</java>
+		</sequential>
+	</macrodef>
+	
+	
 </project>

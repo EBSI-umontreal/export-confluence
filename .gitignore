@@ -7,8 +7,13 @@ src/ansicon/*
 src/apache-ant-1.9.6/*
 !src/apache-ant-1.9.6
 
+src/jdk1.8.0_152/*
+!src/jdk1.8.0_152
+
 src/n1k0-casperjs-54a7a05/*
 !src/n1k0-casperjs-54a7a05
 
 src/phantomjs-2.1.1-windows/*
 !src/phantomjs-2.1.1-windows
+
+src/epub_template/OEBPS/images/*

@@ -1,3 +1,9 @@
+EPUB
+- Dans le fichier XML, toutes les URL des pages doivent être sous la forme : https://wiki.umontreal.ca/pages/viewpage.action?pageId=
+
+
+ANSICON
+
 casperJS en x64 pour permettre la coloration avec ansicon :
 
 Recompile casperjs.exe for the x64 platform, which is quick and painless:
