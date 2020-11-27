@@ -6,7 +6,8 @@
 	xmlns:exp="http://export-confluence"
 	xmlns="http://www.w3.org/1999/xhtml" 
 	exclude-result-prefixes="html xsl">
-	<xsl:output indent="yes" method="xml" omit-xml-declaration="yes" encoding="utf-8" />
+	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" />
+	<!-- Ne pas faire de sortie indentée pour éviter les problèmes d'espaces avant ou après les <span> -->
 	
 	<!-- ==================
 		 COUVERTURE
@@ -15,7 +16,7 @@
 	<xsl:template match="guide">
 		<xsl:result-document href="cover.xhtml">
 			<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
-			<html lang="fr-ca">
+			<html lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
 				<head>
 					<meta charset="utf-8"/>
 					<title>Couverture</title>
@@ -30,6 +31,13 @@
 						</p>
 						<p id="pageTitre-titre"><xsl:value-of select="normalize-space(//span[@id = 'metadonnées-titre'])"/></p>
 						<p id="pageTitre-année"><xsl:value-of select="normalize-space(//span[@id = 'metadonnées-date'])"/></p>
+					</div>
+					<div style="text-indent:0;text-align:center;margin-right:auto;margin-left:auto;width:99%;page-break-before:auto;page-break-inside:avoid;page-break-after:auto;">
+						<div style="margin-left:0;margin-right:0;text-align:center;text-indent:0;width:100%;">
+							<p style="display:inline-block;text-indent:0;width:100%;">
+								<img alt="Illustration" src="images/suivez-le-guide.png" style="max-width:99%;"/>
+							</p>
+						</div>
 					</div>
 				</body>
 			</html>
@@ -47,7 +55,7 @@
 	<xsl:template match="//page[position()=1]">
 		<xsl:result-document href="toc.xhtml">
 			<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
-			<html lang="fr-ca">
+			<html lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
 				<head>
 					<meta charset="utf-8"/>
 					<title>Table des matières</title>
@@ -104,14 +112,14 @@
 			
 			<!-- CONTENU DU FICHIER DE SORTIE -->
 			<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
-			<html lang="fr-ca">
+			<html lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
 				<head>
 					<meta charset="utf-8"/>
-					<title><xsl:value-of select="./titre"/></title>
+					<title><xsl:value-of select="normalize-space(./titre)"/></title>
 					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
 				<body>
-					<h1><xsl:value-of select="titre"/></h1>
+					<h1><xsl:value-of select="normalize-space(./titre)"/></h1>
 					<xsl:apply-templates select="rubriques"/>
 					<xsl:apply-templates select="bas-de-page"/>
 				</body>
@@ -124,7 +132,7 @@
 		<xsl:apply-templates mode="copy-no-namespaces"/>
 	</xsl:template>
 	
-	
+	<!-- Pieds de page -->
 	<xsl:template match="bas-de-page">
 		<xsl:apply-templates mode="copy-no-namespaces"/>
 	</xsl:template>
@@ -146,7 +154,7 @@
 			<!-- Si c'est une illustration, aggrandir l'image -->
 			<!--<xsl:if test="ancestor::div[@class='tp-illustration']">-->
 			<xsl:if test="ancestor::div[contains(@class, 'tp-illustration')]">
-				<xsl:attribute name="style">width:99%;</xsl:attribute>
+				<xsl:attribute name="style">max-width:99%;</xsl:attribute>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>

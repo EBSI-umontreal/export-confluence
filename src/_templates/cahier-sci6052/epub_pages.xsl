@@ -2,18 +2,18 @@
 <xsl:stylesheet version="2.0" 
 	xmlns:epub="http://www.idpf.org/2007/ops"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:exp="http://export-confluence"
 	xmlns="http://www.w3.org/1999/xhtml" 
 	exclude-result-prefixes="html xsl">
 	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" />
 	<!-- Ne pas faire de sortie indentée pour éviter les problèmes d'espaces avant ou après les <span> -->
 	
+	<!-- ==================
+		 COUVERTURE
+		 ===================
+	-->
 	<xsl:template match="guide">
-		
-		<!-- ==================
-			 COUVERTURE
-			 ===================
-		-->
 		<xsl:result-document href="cover.xhtml">
 			<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
 			<html lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
@@ -137,7 +137,6 @@
 	</xsl:template>
 	
 	
-	
 	<xsl:template match="rubriques">
 		<xsl:apply-templates mode="copy-no-namespaces"/>
 	</xsl:template>
@@ -161,6 +160,24 @@
 		</div>
 	</xsl:template>
 	
+
+	<!-- Pieds de page -->
+	<xsl:template match="sup[./a/@class='footnotes-marker']" mode="copy-no-namespaces">
+		<xsl:element name="sup">
+			<xsl:element name="a">
+				<xsl:attribute name="href">
+					<xsl:value-of select="concat('#', ./a/@name)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">
+					<xsl:value-of select="concat('fn',./a/@name)"/>
+				</xsl:attribute>
+				<xsl:attribute name="epub:type">noteref</xsl:attribute>
+				<xsl:value-of select="concat('[', normalize-space(.) , ']')"/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	
+	
 	<xsl:template match="img" mode="copy-no-namespaces">
 		<xsl:element name="img">
 			<xsl:variable name="urlImg" select="@src"/>
@@ -182,54 +199,54 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<!-- Traiter les liens entre le TP -->
-	<xsl:template match="a[starts-with(@href, '/pages/viewpage.action?pageId=')]" mode="copy-no-namespaces">
-		<xsl:variable name="pageid" select="substring-before(substring-after(@href, 'pageId='), '#')"/>
-		<!--Traitement des ID -->
-		<xsl:variable name="ancre" select="replace(substring-after(@href, '#'), '[^a-zA-Z0-9. ]', '')"/>
-		<a href="{concat($pageid, '.xhtml', '#', $ancre)}">
-			<xsl:apply-templates/>
-		</a>
-	</xsl:template>
-	
-	<!-- Pieds de page -->
-	<xsl:template match="sup[./a/@class='footnotes-marker']" mode="copy-no-namespaces">
-		<xsl:element name="sup">
-			<xsl:element name="a">
-				<xsl:attribute name="href">
-					<xsl:value-of select="concat('#', ./a/@name)"/>
-				</xsl:attribute>
-				<xsl:attribute name="id">
-					<xsl:value-of select="concat('fn',./a/@name)"/>
-				</xsl:attribute>
-				<xsl:attribute name="epub:type">noteref</xsl:attribute>
-				<xsl:value-of select="concat('[', normalize-space(.) , ']')"/>
-			</xsl:element>
-		</xsl:element>
-	</xsl:template>
-	
-	
-	<!--Traitement des ID de Confluence pour enlever les caractères non valides -->	
-	<xsl:template match="@id">
-		<xsl:attribute name="id">
-			<xsl:value-of select="replace(., '[^a-zA-Z0-9. ]', '')"/>
-		</xsl:attribute>
-	</xsl:template>
+	<!-- Traiter les liens entre les pages -->
 	<xsl:template match="@href">
+		<xsl:attribute name="href">
+			<xsl:value-of select="exp:traiterLiens(.)"/>
+		</xsl:attribute>
+	</xsl:template>	
+	<xsl:function name="exp:traiterLiens">
+		<xsl:param name="href"/>
 		<xsl:choose>
-			<xsl:when test="starts-with(., '#')">
-				<xsl:attribute name="href">
-					<!-- corriger les liens internes avec les mêmes règles -->
-					<xsl:value-of select="concat('#', replace(., '[^a-zA-Z0-9. ]', ''))"/>
-				</xsl:attribute>
+			<!-- Lien interne -->
+			<xsl:when test="starts-with($href, '#')">
+				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
+				<xsl:value-of select="concat('#', $ancre)"/>
 			</xsl:when>
+			<!-- Lien externe (EPUB) avec ancre -->
+			<xsl:when test="contains($href, '/pages/viewpage.action?pageId=') and contains($href, '#')">
+				<xsl:variable name="pageid" select="substring-before(substring-after($href, 'pageId='), '#')"/>
+				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
+				<xsl:value-of select="concat($pageid, '.xhtml', '#', $ancre)"/>
+			</xsl:when>
+			<!-- Lien externe (EPUB) -->
+			<xsl:when test="contains($href, '/pages/viewpage.action?pageId=')">
+				<xsl:variable name="pageid" select="substring-after($href, 'pageId=')"/>
+				<xsl:value-of select="concat($pageid, '.xhtml')"/>
+			</xsl:when>
+			<!-- Lien externe (Wiki) -->
+			<xsl:when test="starts-with($href, '/')">
+				<xsl:value-of select="concat('https://wiki.umontreal.ca', $href)"/>
+			</xsl:when>
+			<!-- Lien externe (Web) -->
 			<xsl:otherwise>
-				<xsl:copy/>
+				<xsl:value-of select="$href"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>	
+	</xsl:function>
 	
 	
+	<!--Traitement des ID de Confluence pour enlever les caractères non valides -->
+	<xsl:template match="@id">
+		<xsl:attribute name="id" select="exp:traiterID(.)"/>
+	</xsl:template>
+	<xsl:function name="exp:traiterID">
+		<xsl:param name="id"/>
+		<xsl:value-of select="replace($id, '[^a-zA-Z0-9. ]', '')"/>
+	</xsl:function>
+	
+
+
 	<!--Conf6.7+ Éliminer les colgroup -->
 	<xsl:template match="colgroup" mode="copy-no-namespaces"></xsl:template>
 	

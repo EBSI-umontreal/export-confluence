@@ -64,7 +64,7 @@
 		<manifest>
 			<!-- items inclus dans le templates -->
 			<item id="style" href="styles/stylesheet.css" media-type="text/css"/>
-			<item id="image_suivez-le-guide.png" href="images/afaire.png" media-type="image/png"/>
+			<item id="image_suivez-le-guide.png" href="images/suivez-le-guide.png" media-type="image/png"/>
 			
 			<!-- Éléments générés -->
 			<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
