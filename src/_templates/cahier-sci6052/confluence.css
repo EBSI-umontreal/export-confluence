@@ -72,8 +72,10 @@ div.tp{
 .tp-description table{
     width: 100%;
 }
+.tp-description table, .tp-description table td, .tp-description table th{
+    border : none !important; /* !important requis en raison de la règle ".tp table", etc. */
+}
 .tp-description table td, .tp-description table th{
-    border: none;
     background-color:transparent !important;
     vertical-align: top;
 
@@ -106,25 +108,36 @@ div.tp{
 }
 
 
-.tp p, .tp td, .tp th, .tp li {
+
+.tp p, .tp td, .tp th, .tp li, .tp th, .tp td {
     font-size: 10pt;
 }
+
+
+
+
+
 
 .tp h2{
     font-family: Frutiger;
     font-size: 14pt;
-
+    font-weight : bold;
     border-top : 1px solid black;
 }
-.tp h3 {
+.tp h3, .tp-sommaire-titre, .tp-important-titre {
     font-family: Frutiger;
     font-size: 12pt;
+    font-weight : bold;
     font-style: italic;
 }
 .tp h4 {
     font-family: Frutiger;
     font-size: 10pt;
     font-style: italic;
+}
+.tp h1, .tp h2, .tp h3, .tp h4{
+    page-break-inside:avoid;
+    page-break-after:avoid;
 }
 .tp ul, .tp ol{
     padding-left : 0.25in;
@@ -150,6 +163,11 @@ div.tp{
 }
 .tp-afaire{
     padding-left : 0.25in;
+
+
+
+
+
 }
 
 .tp-important{
@@ -187,6 +205,19 @@ div.tp-code * {
 }
 /*Confluence (f) */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*==================
   Questions
   ==================*/
@@ -216,8 +247,12 @@ div.tp-code * {
 /*==================
   Illustrations
   ==================*/
-.tp {
+.tp-section {
     counter-reset: legendecounter;
+}
+/* Permettre la numérotation entre 2 .tp-section : https://stackoverflow.com/questions/47769190/css-counter-numbered-headings-in-different-div?noredirect=1&lq=1 */
+.tp-section ~ .tp-section {
+  counter-reset: none;
 }
 .tp-illustration{
     counter-increment: legendecounter;
@@ -259,6 +294,9 @@ div.tp-code * {
 
 
 
+
+
+
 /*EPUB (f)*/
 
 /*==================
@@ -276,9 +314,6 @@ div.tp-code * {
 .tp {
     counter-reset: h2counter;
 }
-h1 {
-    counter-reset: h2counter;
-}
 h2 {
     counter-reset: h3counter;
 }
@@ -290,6 +325,12 @@ h2:before {
     counter-increment: h2counter;
     counter-reset: h3counter;
 }
+/*EPUB (d) : titre pour liste des notes de bas de page */
+
+
+
+
+/*EPUB (f)*/
 h3:before {
     content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
     counter-increment: h3counter;

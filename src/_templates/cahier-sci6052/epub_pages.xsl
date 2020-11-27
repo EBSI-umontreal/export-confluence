@@ -22,7 +22,7 @@
 					<title>Couverture</title>
 					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
-				<body>
+				<body class="tp">
 					<div id="pageTitre-entête">
 						<p>
 							<span id="pageTitre-FAS">Faculté des arts et des sciences</span>
@@ -48,7 +48,7 @@
 					<title>Table des matières</title>
 					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
-				<body>
+				<body class="tp">
 					<nav epub:type="toc">
 						<h1>Table des matières</h1>
 						<ol>
@@ -91,12 +91,12 @@
 					<title><xsl:value-of select="normalize-space(./titre)"/></title>
 					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
-				<body>
+				<body class="tp">
 					<h1><xsl:value-of select="normalize-space(./titre)"/></h1>
 					<xsl:apply-templates select="rubriques"/>
 					
 					<xsl:if	test=".//*[@class='footnotes-marker']">
-						<h2>Liste des pieds de pages</h2>
+						<h2 class="listeNotes">Liste des notes dans le texte</h2>
 						<xsl:for-each select=".//*[@class='footnotes-marker']">
 							
 							<xsl:variable name="contenuFootnote" select="
@@ -177,7 +177,7 @@
 			<!-- Si c'est une illustration, aggrandir l'image -->
 			<!--<xsl:if test="ancestor::div[@class='tp-illustration']">-->
 			<xsl:if test="ancestor::div[contains(@class, 'tp-illustration')]">
-				<xsl:attribute name="style">width:99%;</xsl:attribute>
+				<xsl:attribute name="style">max-width:99%;</xsl:attribute>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
