@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf"
+<xsl:stylesheet version="2.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:opf="http://www.idpf.org/2007/opf"
 	xmlns="http://www.idpf.org/2007/opf">
 	<xsl:output method="xml" version="1.0" indent="yes" encoding="utf-8" omit-xml-declaration="no"/>
 
@@ -61,8 +63,15 @@
 	<xsl:template name="manifest">
 		<manifest>
 			<!-- items inclus dans le templates -->
-			<item id="style" href="stylesheet.css" media-type="text/css"/>
+			<item id="style" href="styles/stylesheet.css" media-type="text/css"/>
 			<item id="image_afaire.png" href="images/afaire.png" media-type="image/png"/>
+			<item id="fonts_Charlotte-Std-Book" href="fonts/Charlotte-Std-Book.otf" media-type="application/x-font-opentype"/>
+			<item id="fonts_Charlotte-Std-Book-Italic" href="fonts/Charlotte-Std-Book-Italic.otf" media-type="application/x-font-opentype"/>
+			<item id="fonts_Charlotte-Std-Book-Bold" href="fonts/Charlotte-Std-Book-Bold.otf" media-type="application/x-font-opentype"/>
+			<item id="fonts_frutiger" href="fonts/frutiger.ttf" media-type="application/x-font-ttf"/>
+			<item id="fonts_frutiger-bold" href="fonts/frutiger-bold.ttf" media-type="application/x-font-ttf"/>
+			<item id="fonts_frutiger-bold-italic" href="fonts/frutiger-bold-italic.ttf" media-type="application/x-font-ttf"/>
+			<item id="fonts_frutiger-italic" href="fonts/frutiger-italic.ttf" media-type="application/x-font-ttf"/>
 			
 			<!-- Éléments générés -->
 			<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
@@ -86,7 +95,7 @@
 				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('image_', $imgFile)}"
 					href="{concat('images/', $imgFile)}"
 					media-type="{replace(lower-case(concat('image/', $imgFileExt)), 'jpg', 'jpeg')}"/>
-			</xsl:for-each>		
+			</xsl:for-each>
 
 		</manifest>
 	</xsl:template>

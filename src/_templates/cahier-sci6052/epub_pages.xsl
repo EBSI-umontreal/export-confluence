@@ -5,7 +5,8 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns="http://www.w3.org/1999/xhtml" 
 	exclude-result-prefixes="html xsl">
-	<xsl:output indent="yes" method="xml" omit-xml-declaration="yes" encoding="utf-8" />
+	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" />
+	<!-- Ne pas faire de sortie indentée pour éviter les problèmes d'espaces avant ou après les <span> -->
 	
 	<xsl:template match="guide">
 		
@@ -19,7 +20,7 @@
 				<head>
 					<meta charset="utf-8"/>
 					<title>Couverture</title>
-					<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
 				<body>
 					<div id="pageTitre-entête">
@@ -45,7 +46,7 @@
 				<head>
 					<meta charset="utf-8"/>
 					<title>Table des matières</title>
-					<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
 				<body>
 					<nav epub:type="toc">
@@ -87,11 +88,11 @@
 			<html lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
 				<head>
 					<meta charset="utf-8"/>
-					<title><xsl:value-of select="./titre"/></title>
-					<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+					<title><xsl:value-of select="normalize-space(./titre)"/></title>
+					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
 				<body>
-					<h1><xsl:value-of select="titre"/></h1>
+					<h1><xsl:value-of select="normalize-space(./titre)"/></h1>
 					<xsl:apply-templates select="rubriques"/>
 					
 					<xsl:if	test=".//*[@class='footnotes-marker']">

@@ -80,11 +80,14 @@ function spider(url) {
 		//capturer(this);
 		var pageTitle = this.fetchText('title');
 		var pageTitre = this.evaluate(function() {
-		    /* 20180707 - À adapter pour cahier VS guides 
-			var titreH1 = document.getElementsByClassName("titre");
-			return $('<div/>').html(titreH1).text();
-			*/
-			var titreH1 = document.getElementById("title-text");
+			/*Titre du template des guides*/
+			if (document.getElementsByClassName("titre").length !== 0){
+				var titreH1 = document.getElementsByClassName("titre");
+			}
+			/*Titre du template du cahier SCI6052*/
+			else {
+				var titreH1 = document.getElementById("title-text");
+			}
 			return $('<div/>').html(titreH1).text();
 		});
 		

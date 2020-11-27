@@ -1,13 +1,66 @@
 /*==================
+  FONTS
+  ==================*/
+/*Confluence (d) */
+/*https://www.onlinewebfonts.com/download/358462955e7383e37d7754e709f2cb34*/
+@import url(//db.onlinewebfonts.com/c/358462955e7383e37d7754e709f2cb34?family=Charlotte+Std);
+/*Confluence (f) */
+/*EPUB (d)*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*EPUB (f)*/
+
+
+/*==================
   Mise en page générale
   ==================*/
-/*https://www.onlinewebfonts.com/download/db31d29f58b22b42afce7b67f15d408a*/
-@import url(//db.onlinewebfonts.com/c/db31d29f58b22b42afce7b67f15d408a?family=Charlotte+Std);
+/*Confluence (d) */
 div.tp{
+    font-family : "Charlotte Std";
     width:8.5in;
     margin :0in 1in 0 1in;
+    text-align : left;
 }
+/*Confluence (f) */
+/*EPUB (d)*/
 
+
+
+
+
+/*EPUB (f)*/
 
 /*==================
   Mise en forme
@@ -28,19 +81,24 @@ div.tp{
     padding: 6pt 6pt 6pt 0;
 }
 .tp-description table th, .tp-sommaire-titre{
-    display: block;
     font-family: Frutiger;
     font-weight: bold;
-    font-size: 10pt;
 }
-/*.tp-description p{
-    margin-top:12pt !important;
-}*/
-
+/*https://stackoverflow.com/questions/11267154/fit-cell-width-to-content*/
+.tp-description table th{
+    width:1%;
+    white-space:nowrap;
+}
+*.tp-description p, *.tp-description ul{
+    margin : 0;
+}
+.tp-sommaire-titre{
+    display: block;
+}
 .tp-sommaire-titre, .tp h2, .tp h3{
     font-weight: bold;
 }
-.tp-sommaire-titre, .tp h2, .tp h3, .tp-section > p, .tp-afaire, .tp-important, .tp-illustration, .tp-question-intitule {
+.tp-sommaire-titre, .tp h2, .tp h3, .tp-section > p, .tp-afaire, .tp-important, .tp-code, .tp-illustration, .tp-question-intitule {
     margin-top:12pt !important;
 }
 .tp-illustration-légende > p{
@@ -49,7 +107,6 @@ div.tp{
 
 
 .tp p, .tp td, .tp th, .tp li {
-    font-family: "Charlotte Std";
     font-size: 10pt;
 }
 
@@ -76,21 +133,17 @@ div.tp{
     margin-top:8pt !important;
 }
 
-/*
-.tp-afaire{
-    background-image: url(https://wiki.umontreal.ca/download/attachments/132189775/afaire.png);
-    background-repeat:no-repeat;
-    padding-left : 0.25in;
-    font-style: italic;
-}
-*/
+
 .tp-afaire::before{
     content: "";
     display: block;
-
+    /*Confluence (d) */
     background-image: url(https://wiki.umontreal.ca/download/attachments/132189775/afaire.png);
-    width: 18px;
+    /*Confluence (f) */
+    /*EPUB (d)*/
 
+    /*EPUB (f)*/
+    width: 18px;
     height: 18px;
     float: left;
     margin: 0 0 0 -0.25in;
@@ -98,16 +151,12 @@ div.tp{
 .tp-afaire{
     padding-left : 0.25in;
 }
+
 .tp-important{
     margin-left: 0.25in;
     border-left: 5px double black;
     padding-left: 0.1in;
 }
-/*.tp-important:before{
-    content: 'Important :\A';
-    font-size: 10pt;
-    font-weight:bold;
-}*/
 .tp-important-titre{
     font-weight:bold;
 }
@@ -115,18 +164,28 @@ div.tp{
     margin: 0 !important;
 }
 
+.tp-code{
+    font-family: "Courier New";
+}
+div.tp-code * {
+    margin : 0;
+}
 
 .tp-nomFichier{
     font-family: "Courier New";
-    font-size: 10pt;
 }
 .tp-nomConsacré{
+    text-transform: uppercase;
+    font-variant: small-caps;
     font-weight: bold;
 }
+/*Confluence (d) */
+/*Espace devant les spans : ajout d'une espace via CSS*/
 .tp-nomFichier::before, .tp-nomConsacré::before{
     content: "\0020";
     font-size: 10pt;
 }
+/*Confluence (f) */
 
 /*==================
   Questions
@@ -164,12 +223,16 @@ div.tp{
     counter-increment: legendecounter;
     text-align:center;
 
+    /*EPUB (d)*/
 
 
 
 
 
 
+
+
+    /*EPUB (f)*/
 }
 .tp-illustration-legende{
     text-align:center;
@@ -179,6 +242,24 @@ div.tp{
     content: "Figure " counter(legendecounter) " : ";
 }
 
+/*==================
+  Pieds de page (popup & liste)
+  ==================*/
+/*EPUB (d)*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*EPUB (f)*/
 
 /*==================
   TDM
@@ -186,7 +267,6 @@ div.tp{
 /*TDM automatique confluence*/
 .tp-tdm > .toc-macro > ul{
     padding-left: 0 !important;
-    -webkit-padding-start: 0 !important;
 }
 .tp-tdm ul{
     list-style-type: none;
@@ -218,3 +298,33 @@ h4:before {
     content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) ".\0000a0\0000a0";
     counter-increment: h4counter;
 }
+
+
+/*==================
+  COVER
+  ==================*/
+/*EPUB (d)*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*EPUB (f)*/

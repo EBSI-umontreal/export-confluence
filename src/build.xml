@@ -208,6 +208,18 @@
 			<regexp pattern="&lt;img([^>]*)&gt;"/>
 			<substitution expression="&lt;img\1/&gt;"/>
 		</replaceregexp>
+		
+		<!--https://stackoverflow.com/questions/1765847/deleting-new-lines-with-regular-expression-from-ant-task-->
+		<replaceregexp file="${xml-output}" match="(\r?\n)\s*\r?\n" replace="\1" flags="g"/>
+		
+		<!--Correction des espaces avec les span -->
+		<replaceregexp file="${xml-output}" match="&lt;/span&gt;\n\." replace="&lt;/span&gt;." flags="g"/>
+		<replaceregexp file="${xml-output}" match="&lt;span" replace=" &lt;span" flags="g"/>
+		<!-- 
+		<replaceregexp file="${xml-output}" match="  " replace=" " flags="g"/>
+		<replaceregexp file="${xml-output}" match="data-hasbody=&quot;true&quot;\s*" replace="" flags="g"/>
+		-->
+		
 		<!--Conf6.7+ corriger les col non fermés -->
 		<replaceregexp file="${xml-output}" flags="g">
 			<regexp pattern="&lt;col&gt;"/>
@@ -220,6 +232,10 @@
 		</replaceregexp>
 		<replaceregexp file="${xml-output}" flags="g">
 			<regexp pattern="(\s*)output-block"/>
+			<substitution expression=""/>
+		</replaceregexp>
+		<replaceregexp file="${xml-output}" flags="g">
+			<regexp pattern="^\n"/>
 			<substitution expression=""/>
 		</replaceregexp>
 	</target>
@@ -302,15 +318,10 @@
 		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}" includes="mimetype" update="true" keepcompression="true" compress="false" createunicodeextrafields="never" zip64Mode="never"/>
 	</target>
 	
-	<target name="zipepub">
-
-
-<zip destfile="${output.dir}${file.separator}${dita.map.filename.root}.epub"
-basedir="${epub.temp.dir}"
-
-/>
-</target>
 	
+	<target name="test">
+		
+	</target>
 	
 	
 	<!-- ===========================================================

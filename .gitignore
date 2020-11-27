@@ -24,4 +24,7 @@ src/phantomjs-2.1.1-windows/*
 src/SaxonHE9-8-0-12J/*
 !src/SaxonHE9-8-0-12J
 
+src/_templates/cahier-sci6052/epub/OEBPS/fonts/*
+src/_templates/cahier-sci6052/ressources/*
 src/_templates/guides/epub/OEBPS/images/*
+src/_templates/guides/epub/OEBPS/fonts/*
