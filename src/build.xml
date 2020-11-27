@@ -28,7 +28,8 @@
 		<echo>4) Personnel</echo>
 		<echo>5) Cahier de protocoles du SCI6052</echo>
 		<echo>6) Protocoles du SCI6306</echo>
-		<input message="Votre choix?" validargs="1,2,3,4,5,6" addproperty="guideAExporter"/>
+		<echo>7) Protocoles du SCI7003</echo>
+		<input message="Votre choix?" validargs="1,2,3,4,5,6,7" addproperty="guideAExporter"/>
 		<condition property="choix.1">
 			<equals arg1="1" arg2="${guideAExporter}"/>
 		</condition>
@@ -47,6 +48,9 @@
 		<condition property="choix.6">
 			<equals arg1="6" arg2="${guideAExporter}"/>
 		</condition>
+		<condition property="choix.7">
+			<equals arg1="7" arg2="${guideAExporter}"/>
+		</condition>
 		
 		
 		<antcall target="export.1ercycle"/>
@@ -55,6 +59,7 @@
 		<antcall target="export.pers"/>
 		<antcall target="export.sci6052"/>
 		<antcall target="export.sci6306"/>
+		<antcall target="export.sci7003"/>
 	</target>
 	
 	
@@ -66,6 +71,13 @@
 		<property name="xml-output" value="${cache-output}/guide1ercycle.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guide1ercycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
+		<property name="pdf-output.fichier" value="${dossier-output}/guide1ercycle.pdf"/>
+		<!-- encoder/décoder argument : 
+			1) https://www.web2generators.com/html-based-tools/online-html-entities-encoder-and-decoder
+			2) remplacer &quote; par &apos;
+			3) remettre les caractères unicodes : ex. &copy; -> ©
+		-->
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2019-2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -77,6 +89,8 @@
 		<property name="xml-output" value="${cache-output}/guide2ecycle.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
+		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2019-2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -88,6 +102,8 @@
 		<property name="xml-output" value="${cache-output}/guidedocto.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
+		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2019-2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -120,7 +136,18 @@
 		<property name="cache-output" value="${dossier-output}/cahierSCI6306"/>
 		<property name="xml-output" value="${cache-output}/cahierSCI6306.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6306.epub"/>
-		<property name="epub-template" value="./_templates/cahier-sci6052"/>
+		<property name="epub-template" value="./_templates/protocole-sci6306"/>
+		<antcall target="exportation"/>
+	</target>
+	
+	<target name="export.sci7003" if="choix.7">
+		<echo>Exportation du cahier de protocoles du SCI7003...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=141165851"/>
+		<property name="cache-output" value="${dossier-output}/cahierSCI7003"/>
+		<property name="xml-output" value="${cache-output}/cahierSCI7003.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI7003.epub"/>
+		<property name="epub-template" value="./_templates/cahier-sci7003"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -155,6 +182,7 @@
 	<target name="exportation.cache" if="cacheOuDownload.1">
 		<echo>Exportation avec fichier de cache</echo>
 		<antcall target="epub"/>
+		<antcall target="pdf"/>
 	</target>
 	
 	<target name="exportation.download" if="cacheOuDownload.2">
@@ -162,6 +190,7 @@
 		<delete dir="${cache-output}"/>
 		<antcall target="xml"/>
 		<antcall target="epub"/>
+		<antcall target="pdf"/>
 	</target>
 	
 	<!--<target name="exportation" depends="xml, epub">
@@ -192,8 +221,6 @@
 		 =                        Tâches XML                      =
 		 ==========================================================
 	-->
-	
-	
 	<target name="xml" depends="XML_exportation, XML_nettoyer, XML_well-formed">
 		<echo>XML : Fin!</echo>
 	</target>
@@ -243,7 +270,11 @@
 		<!--Conf6.7+ corriger les col non fermés -->
 		<replaceregexp file="${xml-output}" flags="g">
 			<regexp pattern="&lt;col&gt;"/>
-			<substitution expression="&lt;hr/&gt;"/>
+			<substitution expression="&lt;col/&gt;"/>
+		</replaceregexp>
+		<replaceregexp file="${xml-output}" flags="g">
+			<regexp pattern="&lt;col\s([^>]*)&gt;"/>
+			<substitution expression="&lt;col \1/&gt;"/>
 		</replaceregexp>
 		<!--Conf6.7+ supprimer les valeurs d'attributs conf-macro & output-block -->
 		<replaceregexp file="${xml-output}" flags="g">
@@ -339,8 +370,25 @@
 	</target>
 	
 	
-	<target name="test">
-		
+	<!-- ==========================================================
+		 =                      Tâches PDF                       =
+		 ==========================================================
+	-->
+	<target name="pdf">
+		<echo unless:set="pdf-output.fichier">tache ignoree, configurez les proprietes pdf-output</echo>
+		<delete file="${pdf-output.fichier}" if:set="pdf-output.fichier"/>
+		<exec executable="ebook-convert" if:set="pdf-output.fichier">
+			<arg value="${epub-output.fichier}"/>
+			<arg value="${pdf-output.fichier}"/>
+			<!-- liste des paramètres : https://manual.calibre-ebook.com/generated/en/ebook-convert.html -->
+			<arg value="--embed-all-fonts"/>
+			<arg value="--enable-heuristics"/>
+			<arg value="--uncompressed-pdf"/>
+			<arg value="--paper-size=&quot;letter&quot;"/>
+			<arg value="--pdf-footer-template=${pdf-output.footnote}" if:set="pdf-output.footnote" />
+			<arg value="--pdf-header-template=${pdf-output.header}" if:set="pdf-output.header" />
+		</exec>
+		<echo>PDF : Fin!</echo>
 	</target>
 	
 	
