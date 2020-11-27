@@ -1,0 +1,5 @@
+casperJS en x64 pour permettre la coloration avec ansicon :
+
+Recompile casperjs.exe for the x64 platform, which is quick and painless:
+C:\>cd casperjs\src
+C:\casperjs\src>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /platform:x64 casperjs.cs

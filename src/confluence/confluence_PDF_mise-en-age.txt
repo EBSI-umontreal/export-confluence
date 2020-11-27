@@ -1,0 +1,17 @@
+Page de titre de l’exportation de l’espace PDF
+
+<div id="pageTitre-entête">  
+<p>  
+    <span id="pageTitre-FAS">Faculté des arts et des sciences</span><br/>  
+    <span id="pageTitre-EBSI">École de bibliothéconomie<br />et des sciences de l’information</span>  
+<p>  
+<p id="pageTitre-titre">Guide de l'étudiant de deuxième cycle</p>  
+<p id="pageTitre-année">2016-2017</p>  
+/div>  
+      
+En tête de l’exportation de l’espace PDF
+<p style="text-align:center;">GUIDE DE L'ÉTUDIANT DE DEUXIÈME CYCLE 2016-2017</p>  
+
+
+Bas de page de l’exportation de l’espace PDF
+<p id="pageNum"><span/></p>  

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Confluence - Migration des guides de l'EBSI en PDF" basedir="." default="about">
+	<property name="fichier-output" value="./out/content.xml"/>
+	
+	
+	<target name="about" description="À propos">
+		<echo>+-----------------------------------------------------------+</echo>
+		<echo>      Confluence - Migration des guides de l'EBSI en PDF     </echo>
+		<echo>+-----------------------------------------------------------+</echo>
+		<echo> EBSI - Universite de Montreal</echo>
+		<echo> Arnaud d'Alayer 2016</echo>
+		<echo />
+		<echo> Version : 20161215</echo>
+		<echo>+-----------------------------------------------------------+</echo>
+	</target>
+	
+	
+	<!-- ==========================================================
+		 =                    Tâche importation                   =
+		 ==========================================================
+	-->
+	<target name="importation" depends="about, exportXML, nettoyer, well-formed">
+		<echo>FIN!</echo>
+	</target>
+	
+	<!-- ==========================================================
+		 =                    Tâche importation                   =
+		 ==========================================================
+	-->
+	<target name="exportXML">
+		<echo>Exportation des pages du guide dans un fichier XML...</echo>
+		<exec dir="${basedir}" executable="cmd.exe">
+			<arg line="/c casperjs transfert-guide_20161215.js"/>
+		</exec>
+	</target>
+	
+	<!-- ==========================================================
+		  =                    Tâche nettoyer                      =
+		  ==========================================================
+	-->
+	<target name="nettoyer">
+		<echo>Correction du fichier XML...</echo>
+		<!-- corriger les br non fermés -->
+		<replaceregexp file="${fichier-output}" flags="g">
+			<regexp pattern="&lt;br&gt;"/>
+			<substitution expression="&lt;br/&gt;"/>
+		</replaceregexp>
+		<!-- corriger les hr non fermés -->
+		<replaceregexp file="${fichier-output}" flags="g">
+			<regexp pattern="&lt;hr&gt;"/>
+			<substitution expression="&lt;hr/&gt;"/>
+		</replaceregexp>
+		<!-- corriger les img non fermés -->
+		<replaceregexp file="${fichier-output}" flags="g">
+			<regexp pattern="&lt;img([^>]*)&gt;"/>
+			<substitution expression="&lt;img\1/&gt;"/>
+		</replaceregexp>
+	</target>
+	
+	<!-- ==========================================================
+		  =                   Tâche well-formed                    =
+		  ==========================================================
+	-->
+	<target name="well-formed">
+		<echo>Validation du fichier XML...</echo>
+		<xmlvalidate file="${fichier-output}" lenient="true"/>
+	</target>
+</project>
