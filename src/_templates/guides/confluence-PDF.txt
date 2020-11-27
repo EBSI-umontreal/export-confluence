@@ -1,0 +1,145 @@
+Page de titre de l’exportation de l’espace PDF
+==============================================
+<div id="pageTitre-entête">  
+<p>  
+    <span id="pageTitre-FAS">Faculté des arts et des sciences</span><br/>  
+    <span id="pageTitre-EBSI">École de bibliothéconomie<br />et des sciences de l’information</span>  
+<p>  
+<p id="pageTitre-titre">Guide de l'étudiant de deuxième cycle</p>  
+<p id="pageTitre-année">2016-2017</p>  
+</div>  
+
+
+En tête de l’exportation de l’espace PDF
+========================================
+<p style="text-align:center;">GUIDE DE L'ÉTUDIANT DE DEUXIÈME CYCLE 2016-2017</p>  
+
+
+Bas de page de l’exportation de l’espace PDF
+============================================
+<p id="pageNum"><span/></p>  
+
+
+Feuille de style d’exportation PDF
+==================================
+/* ---------------------------------------------- 
+   GÉNÉRAL 
+    ---------------------------------------------- */  
+@page {
+    size:8.5in 11in;
+    margin: 2cm;
+}
+body {
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+}
+/*Titre des pages*/
+.pagetitle h1 {
+    font-weight : bold;
+    font-size: 14.5pt;
+}
+/*Correctif pour images qui retournent à la ligne : https://jira.atlassian.com/browse/CONF-38258*/
+img.confluence-embedded-image {  
+        display: inline-block !important;  
+}
+.noprint{
+    display:none;
+}
+
+/* ------------------------------- 
+   Page titre
+   -------------------------------*/  
+#pageTitre-FAS {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    font-size: 11pt;
+}
+#pageTitre-EBSI {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 8pt;
+}
+#pageTitre-titre  {
+    font-family: Cambria, Georgia, serif; 
+    font-size: 36pt;
+    color : #17365D;
+    border-bottom : 2px solid #4F81BD;
+    margin-top : 120px;
+    padding-bottom : 4px;
+}
+#pageTitre-année {
+    font-family: Cambria,Georgia,serif; 
+    font-size: 20pt;
+    color : #17365D;
+    margin-top : 25px;
+}
+
+/* ------------------------------- 
+   TdM
+   -------------------------------*/  
+/*Supprimer la TDM automatique : https://confluence.atlassian.com/conf58/customise-exports-to-pdf-771891922.html#CustomiseExportstoPDF-TableofContents */
+div.toc {
+    /*display: none;*/
+}
+
+/*correction bug? https://issues.refinedwiki.com/browse/RWUI-17*/
+.rwui_expandable_item_body, .rwui_body{
+    display:block !important;
+}
+.rwui_expandable_item{
+    background-color:white !important;
+}
+
+/* ------------------------------- 
+   Pied 
+   -------------------------------*/  
+/*Numérotation des pages : https://confluence.atlassian.com/conf58/customise-exports-to-pdf-771891922.html#CustomiseExportstoPDF-PageNumbering*/
+#pageNum{
+    float: right;
+}
+#pageNum span:before{
+    content: counter(page);
+}
+
+
+
+/* ---------------------------------------------- 
+   FAQ
+    ---------------------------------------------- */
+
+
+
+
+/* ---------------------------------------------- 
+   GUIDES
+    ---------------------------------------------- */  
+/* -------------------------------
+   Table des matières
+   -------------------------------*/
+/*Cacher avertissement sur TdM*/
+.confluence-information-macro-warning{
+    display:none;
+}
+
+/* ------------------------------- 
+   Bandeau logo UdeM + EBSI 
+   -------------------------------*/  
+.guide-ebsi .logo-section {  
+    display: none;  
+}  
+
+/* ------------------------------- 
+   Contenu
+   -------------------------------*/  
+.guide-ebsi .titre {  
+    display: none;  
+} 
+
+/* ------------------------------- 
+   Pied 
+   -------------------------------*/  
+.guide-ebsi .footer {  
+    display:none;  
+}  
+
+/*.guide-ebsi {
+    page-break-after:always;
+}*/

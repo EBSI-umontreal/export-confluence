@@ -182,6 +182,16 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<!-- Traiter les liens entre le TP -->
+	<xsl:template match="a[starts-with(@href, '/pages/viewpage.action?pageId=')]" mode="copy-no-namespaces">
+		<xsl:variable name="pageid" select="substring-before(substring-after(@href, 'pageId='), '#')"/>
+		<!--Traitement des ID -->
+		<xsl:variable name="ancre" select="replace(substring-after(@href, '#'), '[^a-zA-Z0-9. ]', '')"/>
+		<a href="{concat($pageid, '.xhtml', '#', $ancre)}">
+			<xsl:apply-templates/>
+		</a>
+	</xsl:template>
+	
 	<!-- Pieds de page -->
 	<xsl:template match="sup[./a/@class='footnotes-marker']" mode="copy-no-namespaces">
 		<xsl:element name="sup">
@@ -193,24 +203,9 @@
 					<xsl:value-of select="concat('fn',./a/@name)"/>
 				</xsl:attribute>
 				<xsl:attribute name="epub:type">noteref</xsl:attribute>
-				<xsl:value-of select="concat('[', normalize-space(.) , ']')"/>				
+				<xsl:value-of select="concat('[', normalize-space(.) , ']')"/>
 			</xsl:element>
 		</xsl:element>
-		<!--
-		<xsl:element name="aside">
-			<xsl:attribute name="class">tp-piedDePage</xsl:attribute>
-			<xsl:attribute name="id">
-				<xsl:value-of select="./a/@name"/>
-			</xsl:attribute>
-			<xsl:attribute name="epub:type">footnote</xsl:attribute>
-			<xsl:element name="a">
-				<xsl:attribute name="href">
-					<xsl:value-of select="concat('#fn',./a/@name)"/>
-				</xsl:attribute>
-			</xsl:element>
-			<xsl:value-of select="./a/@content" disable-output-escaping="yes"/>
-		</xsl:element>
-		-->
 	</xsl:template>
 	
 	

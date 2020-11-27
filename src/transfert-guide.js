@@ -97,36 +97,19 @@ function spider(url) {
 			var contenu = document.getElementsByClassName("rubrique");
 			
 			for (var i = 0; i < contenu.length; ++i){
-				content += contenu[i].innerHTML;
+				content += contenu[i].outerHTML;
 			}
 			return content;
-			//console.log(contenu[0].innerHTML);
-			//return contenu[0].innerHTML;
-			//return $('<div/>').html(contenu).text();
 		});
 		var basDePage = this.evaluate(function() {
 			var content = "";
 			var contenu = document.getElementsByClassName("bas-de-page");
 			
 			for (var i = 0; i < contenu.length; ++i){
-				content += contenu[i].innerHTML;
+				content += contenu[i].outerHTML;
 			}
 			return content;
-			//console.log(contenu[0].innerHTML);
-			//return contenu[0].innerHTML;
-			//return $('<div/>').html(contenu).text();
 		});
-		/*
-		var images = this.evaluate(function() {
-			var contenu = document.getElementsByClassName("confluence-embedded-image");
-			
-			var getUrl = window.location;
-			var baseUrl = getUrl .protocol + "//" + getUrl.host;
-			
-			for (var i = 0; i < contenu.length; ++i){
-				console.log('IMAGE : ' + baseUrl + contenu[i].getAttribute('src'));
-			}
-		});*/
 		
 		pageXML += '\n\t<page>';
 		pageXML += '\n\t\t<url>' + escapeHtml(url) + '</url>';
@@ -222,7 +205,7 @@ casper.start(startUrl, function() {
 			'input[name ="os_username"]' : codeAcces,
 			'input[name ="os_password"]' : motDePasse
 		}, true);
-		this.capture('./logs/login.png');
+		//this.capture('./logs/login.png');
 		this.thenClick('#loginButton');
 	}
 });

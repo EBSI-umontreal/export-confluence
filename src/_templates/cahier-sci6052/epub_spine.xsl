@@ -83,10 +83,12 @@
 					<xsl:variable name="id" select="./url"/>
 					<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
 					<item xmlns="http://www.idpf.org/2007/opf" id="{concat('page_', $pageid)}"
-						href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml"/>					
+						href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml"/>
 				</xsl:if>
 			</xsl:for-each>
 
+			<!-- Éviter les doublons) -->
+			<!--
 			<xsl:for-each select="distinct-values(//img/@src)">
 				<xsl:variable name="urlImg" select="."/>
 				<xsl:variable name="imgFile"
@@ -94,6 +96,14 @@
 				<xsl:variable name="imgFileExt" select="substring-after($imgFile, '.')"/>
 				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('image_', $imgFile)}"
 					href="{concat('images/', $imgFile)}"
+					media-type="{replace(lower-case(concat('image/', $imgFileExt)), 'jpg', 'jpeg')}"/>
+			</xsl:for-each>
+			-->
+			<xsl:for-each select="distinct-values(//img/@data-linked-resource-default-alias)">
+				<xsl:variable name="urlImg" select="."/>
+				<xsl:variable name="imgFileExt" select="substring-after($urlImg, '.')"/>
+				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('image_', $urlImg)}"
+					href="{concat('images/', $urlImg)}"
 					media-type="{replace(lower-case(concat('image/', $imgFileExt)), 'jpg', 'jpeg')}"/>
 			</xsl:for-each>
 

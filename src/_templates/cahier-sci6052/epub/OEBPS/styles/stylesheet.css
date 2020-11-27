@@ -109,7 +109,7 @@ body {
 
 
 .tp-piedDePage,
-.tp p, .tp td, .tp th, .tp li, .tp th, .tp td {
+.tp div, .tp p, .tp td, .tp th, .tp li {
     font-size: 10pt;
 }
 

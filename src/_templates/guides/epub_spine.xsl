@@ -8,7 +8,7 @@
 
 
 	<xsl:template match="guide">
-		<package version="3.0" unique-identifier="BookId" xml:lang="fr-ca">
+		<package version="3.0" unique-identifier="BookId" xml:lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
 			<xsl:call-template name="metadata"/>
 			<xsl:call-template name="manifest"/>
 			<xsl:call-template name="spine"/>
@@ -16,14 +16,44 @@
 	</xsl:template>
 
 	<xsl:template name="metadata">
+		<!--EPUB2
+		<metadata xmlns:opf="http://www.idpf.org/2007/opf"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		-->
 		<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
-			<dc:title>Guide EBSI</dc:title> 
-			<dc:creator>EBSI</dc:creator>
-			<dc:language>fr-ca</dc:language> 
-			<dc:date>2018-2019</dc:date>
-			<dc:rights></dc:rights> 
-			<dc:publisher>EBSI</dc:publisher> 
-			<dc:identifier id="bookid">https://wiki.umontreal.ca/display/EBSI/Guide+du+personnel</dc:identifier>
+			<dc:title>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-titre'])"/> : <xsl:value-of select="normalize-space(//span[@id = 'metadonnées-date'])"/>
+			</dc:title>
+			<!--EPUB2
+			<dc:creator
+				opf:role="aut"
+				opf:file-as="{normalize-space(concat(//span[@id='metadonnées-auteur-nom'], ',', //span[@id='metadonnées-auteur-prénom']))}">
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-auteur-nom'])"/>
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-auteur-prénom'])"/>
+			</dc:creator>
+			-->
+			<dc:creator>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-auteur-nom'])"/>
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-auteur-prénom'])"/>
+			</dc:creator>
+			<dc:language>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-langue'])"/>
+			</dc:language>
+			<dc:date>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-date'])"/>
+			</dc:date>
+			<dc:rights>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-droits'])"/>
+			</dc:rights>
+			<dc:publisher>
+				<xsl:value-of select="normalize-space(//span[@id = 'metadonnées-éditeur'])"/>
+			</dc:publisher>
+			<dc:identifier id="BookId">
+				<xsl:value-of
+					select="concat('urn:uuid:', normalize-space(//span[@id = 'metadonnées-uuid']))"
+				/>
+			</dc:identifier>
 			<meta property="dcterms:modified">
 				<xsl:value-of select="concat(format-dateTime(current-dateTime(), '[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]'), 'Z')"/>
 			</meta>
@@ -34,10 +64,7 @@
 		<manifest>
 			<!-- items inclus dans le templates -->
 			<item id="style" href="styles/stylesheet.css" media-type="text/css"/>
-			
-			<item id="fonts_Charlotte-Std-Book" href="fonts/Charlotte-Std-Book.otf" media-type="application/x-font-opentype"/>
-			<item id="fonts_Charlotte-Std-Book-Italic" href="fonts/Charlotte-Std-Book-Italic.otf" media-type="application/x-font-opentype"/>
-			<item id="fonts_Charlotte-Std-Book-Bold" href="fonts/Charlotte-Std-Book-Bold.otf" media-type="application/x-font-opentype"/>
+			<item id="image_suivez-le-guide.png" href="images/afaire.png" media-type="image/png"/>
 			
 			<!-- Éléments générés -->
 			<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
@@ -49,10 +76,12 @@
 					<xsl:variable name="id" select="./url"/>
 					<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
 					<item xmlns="http://www.idpf.org/2007/opf" id="{concat('page_', $pageid)}"
-						href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml"/>					
+						href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml"/>
 				</xsl:if>
 			</xsl:for-each>
 
+			<!-- Éviter les doublons) -->
+			<!--
 			<xsl:for-each select="distinct-values(//img/@src)">
 				<xsl:variable name="urlImg" select="."/>
 				<xsl:variable name="imgFile"
@@ -60,6 +89,14 @@
 				<xsl:variable name="imgFileExt" select="substring-after($imgFile, '.')"/>
 				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('image_', $imgFile)}"
 					href="{concat('images/', $imgFile)}"
+					media-type="{replace(lower-case(concat('image/', $imgFileExt)), 'jpg', 'jpeg')}"/>
+			</xsl:for-each>
+			-->
+			<xsl:for-each select="distinct-values(//img/@data-linked-resource-default-alias)">
+				<xsl:variable name="urlImg" select="."/>
+				<xsl:variable name="imgFileExt" select="substring-after($urlImg, '.')"/>
+				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('image_', $urlImg)}"
+					href="{concat('images/', $urlImg)}"
 					media-type="{replace(lower-case(concat('image/', $imgFileExt)), 'jpg', 'jpeg')}"/>
 			</xsl:for-each>
 

@@ -1,43 +1,113 @@
-/* Style Sheet for ePub Books */
+/* -------------------------------
+   Table des matières
+   -------------------------------*/
+.table-des-matières ol {
+	counter-reset: item;
+}
+.table-des-matières li {
+	display: block;
+	margin-top : 0;
+}
+.table-des-matières li:before {
+	content: counters(item, ".") " ";
+	counter-increment: item
+}
 
-/* Set margins at 2% (This gives a white border around the book) */
+/* ---------------------------------------------- 
+   GUIDES (EPUB)
+    ---------------------------------------------- */  
+body {
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    margin : 0.5in;
+    text-align : left;
+}
 
-body {margin-left:2%;
-	margin-right:2%;
-	margin-top:2%;
-	margin-bottom:2%;}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td{
+    padding : 0.5em;
+}
+th{
+    background-color : rgb(240,240,240);
+    font-weight: bold;
 
+    /*https://stackoverflow.com/questions/11267154/fit-cell-width-to-content*/
+    width:1%;
+    white-space:nowrap;
+}
+
+div, p, td, th, li {
+    font-size: 10pt;
+}
 
 p, li, tr, td {
 	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 	font-size:10pt;
 }
 
-p {
-	margin-left:0;
-	margin-right:0;
-	margin-top:0;
-	margin-bottom:6pt;
-}
-li{
-	margin-bottom:6pt;
-}
-
- h1 {
-	text-align: center;
+h1, h2, h3, h4{
+    font-weight : bold;
 	font-family: Cambria, Georgia, serif;
-	font-size:18pt;
+
+    page-break-inside:avoid;
+    page-break-after:avoid;
+}
+h1 {
+	text-align: center;
+	font-size:16pt;
 	color:rgb(99,36,35);
 }
 h2 {
 	text-align: left;
-	font-family: Cambria, Georgia, serif;
 	font-size:14pt;
 	color:rgb(148,54,52);
 }
 h3 {
 	text-align: left;
-	font-family: Cambria, Georgia, serif;
-	font-size:10pt;
+	font-size:12pt;
 	color:rgb(192,80,77);
+}
+h4{
+	text-align: left;
+	font-size:12pt;
+    font-style: italic;
+}
+h2, h3, p {
+    margin-top:12pt !important;
+}
+
+ul, ol{
+    padding-left : 0.25in;
+}
+li{
+    margin-top:8pt;
+}
+/*==================
+  COVER
+  ==================*/
+#pageTitre-FAS {
+    font-weight : bold;  
+    font-size: 11pt;
+}  
+#pageTitre-EBSI {
+    font-size: 8pt;
+}
+#pageTitre-titre  {
+    font-family: Cambria, Georgia, serif;
+    font-size: 24pt;
+    color : #17365D;
+    border-bottom : 2px solid #4F81BD;
+    margin-top : 120px;
+    padding-bottom : 4px;
+}
+#pageTitre-année {
+    font-family: Cambria,Georgia,serif;
+    font-size: 18pt;
+    color : #17365D;  
+    margin-top : 25px;
 }
