@@ -3,16 +3,23 @@
 
 // Create instances
 var casper = require('casper').create({
+	//verbose: true,
+    //logLevel: "debug",
 	viewportSize: {
 		width: 1440,
 		height: 900
 	}
 });
+var system = require('system');
 var utils = require('utils');
 var helpers = require('./helpers');
 
 // Set the start URL
 var startUrl = casper.cli.get("url");
+
+// Authentification
+var codeAcces = casper.cli.get("codeAcces");
+var motDePasse = casper.cli.get("motDePasse");
 
 // URL variables
 var visitedUrls = [], pendingUrls = [];
@@ -157,7 +164,23 @@ function spider(url) {
 }
 
 // Start spidering
+/*casper.start(startUrl, function() {
+	spider(startUrl);
+});
+*/
 casper.start(startUrl, function() {
+	if(casper.exists('#login-container > div > form')){
+	   this.echo('Authentification requise');
+	   
+	   this.fillSelectors('#login-container > div > form', {
+			'input[name ="os_username"]' : codeAcces,
+			'input[name ="os_password"]' : motDePasse
+		}, true);
+		this.capture('./logs/login.png');
+		this.thenClick('#loginButton');
+	}
+});
+casper.then(function () {
 	spider(startUrl);
 });
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="Confluence - Migration des guides de l'EBSI en PDF/epub" basedir="." default="choix">
+<project name="Confluence - Migration des guides de l'EBSI en PDF/epub" basedir="." default="choix"  xmlns:if="ant:if" xmlns:unless="ant:unless">
 	
 	<property name="dossier-output" value="./out"/>
 	
@@ -12,9 +12,9 @@
 		<echo>   Confluence - Migration des guides de l'EBSI en PDF/epub   </echo>
 		<echo>+-----------------------------------------------------------+</echo>
 		<echo> EBSI - Universite de Montreal</echo>
-		<echo> Arnaud d'Alayer 2016-2017</echo>
+		<echo> Arnaud d'Alayer 2016-2018</echo>
 		<echo />
-		<echo> Version : 20171205</echo>
+		<echo> Version : 20180508</echo>
 		<echo>+-----------------------------------------------------------+</echo>
 	</target>
 	
@@ -28,7 +28,8 @@
 		<echo>2) 2e cycle</echo>
 		<echo>3) docto</echo>
 		<echo>4) Personnel</echo>
-		<input message="Votre choix?" validargs="1,2,3,4" addproperty="guideAExporter"/>
+		<echo>5) Cahier de protocoles du SCI6052</echo>
+		<input message="Votre choix?" validargs="1,2,3,4,5" addproperty="guideAExporter"/>
 		<condition property="choix.1">
 			<equals arg1="1" arg2="${guideAExporter}"/>
 		</condition>
@@ -41,12 +42,16 @@
 		<condition property="choix.4">
 			<equals arg1="4" arg2="${guideAExporter}"/>
 		</condition>
+		<condition property="choix.5">
+			<equals arg1="5" arg2="${guideAExporter}"/>
+		</condition>
 		
 		
 		<antcall target="export.1ercycle"/>
 		<antcall target="export.2ecycle"/>
 		<antcall target="export.docto"/>
 		<antcall target="export.pers"/>
+		<antcall target="export.sci6052"/>
 	</target>
 	
 	
@@ -86,6 +91,15 @@
 		<antcall target="exportation"/>
 	</target>
 	
+	<target name="export.sci6052" if="choix.5">
+		<echo>Exportation du cahier de protocoles du SCI6052...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/display/~dufourch/SCI6052+Cahier+des+protocoles"/>
+		<property name="xml-output" value="${dossier-output}/cahierSCI6052.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6052.epub"/>
+		<antcall target="exportation"/>
+	</target>
+	
 	
 	<!-- ==========================================================
 		 =                    Tâche exportation                   =
@@ -105,10 +119,22 @@
 	</target>
 	
 	
-	<target name="XML_exportation">
+	<target name="XML_exportation">		
+		<input message="Veuillez entrer votre code d'accès (vide = anonyme):" addproperty="codeAcces"/>
+		<echo message="nom d'utilisateur entré : ${codeAcces}"/>
+		
+		<condition property="anonyme">
+			<equals arg1="" arg2="${codeAcces}" />
+		</condition>
+		<echo if:set="anonyme">Acces anonyme</echo>
+		
+		<input unless:set="anonyme" message="Veuillez entrer votre UNIP :" addproperty="motDePasse">
+			<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+		</input>
+	
 		<echo>XML : Exportation des pages du guide dans un fichier XML...</echo>
 		<exec dir="${basedir}" executable="cmd.exe">
-			<arg line="/c casperjs transfert-guide_20171205.js --url='${wiki-url}' --out='${xml-output}'"/>
+			<arg line="/c casperjs transfert-guide.js --url='${wiki-url}' --codeAcces='${codeAcces}' --motDePasse='${motDePasse}' --out='${xml-output}'"/>
 		</exec>
 	</target>
 	
