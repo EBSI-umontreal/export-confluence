@@ -1,0 +1,136 @@
+body {
+    margin-left:2%;
+    margin-right:2%;
+    margin-top:2%;
+    margin-bottom:2%;
+}
+
+.tp-description{
+    border-top : 1px solid black;
+    border-bottom: 1px solid black;
+}
+.tp-description table{
+    width: 100%;
+}
+.tp-description table td, .tp-description table th{
+    border: none;
+    background-color:transparent !important;
+    vertical-align: top;
+
+    margin:0 !important;
+    padding: 6pt 6pt 6pt 0;
+}
+.tp-description table th, .tp-sommaire-titre{
+    display: block;
+    font-family: Frutiger;
+    font-weight: bold;
+    font-size: 10pt;
+}
+/*.tp-description p{
+    margin-top:12pt !important;
+}*/
+
+.tp-sommaire-titre, .tp h2, .tp h3{
+    font-weight: bold;
+}
+.tp-sommaire-titre, .tp h2, .tp h3, .tp-section > p, .tp-afaire, .tp-illustration {
+    margin-top:12pt !important;
+}
+.tp-illustration-légende > p{
+    margin-top:0 !important;
+}
+.tp-sommaire-titre{
+    margin-bottom:12pt !important;
+}
+
+
+.tp p, .tp td, .tp th, .tp li {
+    font-family: "Charlotte Std";
+    font-size: 10pt;
+}
+
+.tp h2{
+    font-family: Frutiger;
+    font-size: 12pt;
+
+    border-top : 1px solid black;
+}
+.tp h3 {
+    font-family: Frutiger;
+    font-size: 12pt;
+    font-style: italic;
+}
+.tp ul, .tp ol{
+    padding-left : 0.25in;
+}
+
+
+
+.tp-afaire{
+    /*background-image: url(https://wiki.umontreal.ca/download/attachments/132189775/afaire.png);*/
+    background-image: url(images/afaire.png);
+    background-repeat:no-repeat;
+    padding-left : 0.25in;
+    font-style: italic;
+}
+
+
+.tp-nomFichier{
+    font-family: "Courier New";
+    font-size: 10pt;
+}
+.tp-nomConsacré{
+    font-weight: bold;
+}
+
+
+/*==================
+  Illustrations
+  ==================*/
+.tp {
+    counter-reset: legendecounter;
+}
+.tp-illustration{
+    counter-increment: legendecounter;
+    text-align:center;
+}
+.tp-illustration-legende{
+    text-align:center;
+    font-weight: bold;
+}
+.tp-illustration-legende p:before{
+    content: "Figure " counter(legendecounter) " : ";
+}
+
+
+/*==================
+  TDM
+  ==================*/
+/*TDM automatique confluence*/
+.tp-tdm > .toc-macro > ul{
+    padding-left: 0 !important;
+    -webkit-padding-start: 0 !important;
+}
+.tp-tdm ul{
+    list-style-type: none;
+}
+
+/* Numérotation h2 & h3 : http://2ality.com/2012/01/numbering-headingshtml.html*/
+.tp {
+    counter-reset: h2counter;
+}
+h1 {
+    counter-reset: h2counter;
+}
+h2 {
+    counter-reset: h3counter;
+}
+h2:before {
+    content: counter(h2counter) ".\0000a0\0000a0";
+    counter-increment: h2counter;
+    counter-reset: h3counter;
+}
+h3:before {
+    content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+    counter-increment: h3counter;
+}

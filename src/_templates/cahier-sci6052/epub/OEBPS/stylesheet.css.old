@@ -1,0 +1,59 @@
+/* Style Sheet for ePub Books */
+
+/* Set margins at 2% (This gives a white border around the book) */
+
+body {margin-left:2%;
+	margin-right:2%;
+	margin-top:2%;
+	margin-bottom:2%;}
+
+/*https://www.cssfontstack.com/frutiger*/
+ h1 {
+	font-family: Frutiger;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	text-transform: uppercase;
+	text-align:center;
+}
+ h2 {
+	font-family: Frutiger;
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+}
+h3 {
+	font-family: Frutiger;
+	font-size: 12px;
+	font-style: normal;
+	font-variant: normal;
+}
+p, li, tr, td {
+	font-family: Frutiger;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+}
+blockquote {
+	font-family: Frutiger;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+}
+pre {
+	font-family: Frutiger;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+}
+
+
+p {
+	margin-left:0;
+	margin-right:0;
+	margin-top:0;
+	margin-bottom:6pt;
+}
+li{
+	margin-bottom:6pt;
+}

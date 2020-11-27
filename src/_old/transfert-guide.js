@@ -4,7 +4,7 @@
 // Create instances
 var casper = require('casper').create({
 	//verbose: true,
-	//logLevel: "debug",
+    //logLevel: "debug",
 	viewportSize: {
 		width: 1440,
 		height: 900
@@ -42,10 +42,9 @@ pageXML += '\n<guide>';
 
 
 var fs = require('fs');
-var xmlOutput = casper.cli.get("xmlOutput");
-var cacheOutput = casper.cli.get("cacheOutput");
+var filename = casper.cli.get("out");
 
-
+//
 function escapeHtml(unsafe) {
 	return unsafe
 		.replace(/&/g, "&amp;")
@@ -109,18 +108,6 @@ function spider(url) {
 			//return contenu[0].innerHTML;
 			//return $('<div/>').html(contenu).text();
 		});
-		/*
-		var images = this.evaluate(function() {
-			var contenu = document.getElementsByClassName("confluence-embedded-image");
-			
-			var getUrl = window.location;
-			var baseUrl = getUrl .protocol + "//" + getUrl.host;
-			
-			for (var i = 0; i < contenu.length; ++i){
-				console.log('IMAGE : ' + baseUrl + contenu[i].getAttribute('src'));
-			}
-		});*/
-		
 		pageXML += '\n\t<page>';
 		pageXML += '\n\t\t<url>' + escapeHtml(url) + '</url>';
 		pageXML += '\n\t\t<title>' + escapeHtml(pageTitle) + '</title>';
@@ -135,34 +122,8 @@ function spider(url) {
 			pageXML += '\n\t\t</bas-de-page>';
 		}
 		pageXML += '\n\t</page>';
-		
-		
-		/*Téléchargement des images (début)*/
-		var images = this.evaluate(function() {
-			var images = [];
-			Array.prototype.forEach.call(__utils__.findAll('.confluence-embedded-image'), function(e) {
-				var lien = e.getAttribute('src');
-				/*console.log("lienImage : " + lien);*/
-				images.push(lien);
-			});
-			return images;
-		});
-		
-		var baseUrl = this.getGlobal('location').origin;
-		Array.prototype.forEach.call(images, function(image) {
-			var imageURL = helpers.absoluteUri(baseUrl, image);
-			/*https://stackoverflow.com/questions/511761/js-function-to-get-filename-from-url*/
-			var imageNom = imageURL.split('/').pop().split('#')[0].split('?')[0];
-			var imageFichier = window.cacheOutput+'/images/'+imageNom;
-			console.log("URL image a downloader : " + imageURL);
-			console.log("Nom de l'image : " + imageNom);
-			console.log("Nom du fichier : " + imageFichier);
-			casper.download(imageURL, imageFichier);
-			
-		});
-		/*Téléchargement des images (fin)*/
-		
-		
+
+
 		// Find links present on this page
 		//ARNAUD : Se limiter à la TdM des guides
 		var links = this.evaluate(function() {
@@ -180,7 +141,7 @@ function spider(url) {
 		});
 
 		// Add newly found URLs to the stack
-		//var baseUrl = this.getGlobal('location').origin;
+		var baseUrl = this.getGlobal('location').origin;
 		Array.prototype.forEach.call(links, function(link) {
 			var newUrl = helpers.absoluteUri(baseUrl, link);
 			if (pendingUrls.indexOf(newUrl) == -1 && visitedUrls.indexOf(newUrl) == -1) {
@@ -197,7 +158,7 @@ function spider(url) {
 		}
 		else {
 			pageXML += '\n</guide>';
-			fs.write(xmlOutput, pageXML, 'w');
+			fs.write(filename, pageXML, 'w');
 		}
 	});
 }
@@ -209,9 +170,9 @@ function spider(url) {
 */
 casper.start(startUrl, function() {
 	if(casper.exists('#login-container > div > form')){
-		this.echo('Authentification requise');
-		
-		this.fillSelectors('#login-container > div > form', {
+	   this.echo('Authentification requise');
+	   
+	   this.fillSelectors('#login-container > div > form', {
 			'input[name ="os_username"]' : codeAcces,
 			'input[name ="os_password"]' : motDePasse
 		}, true);

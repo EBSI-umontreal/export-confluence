@@ -1,8 +1,13 @@
 src/out/*
 src/out/
+src/logs/*
+src/logs/
 
 src/ansicon/*
 !src/ansicon
+
+src/ant-contrib-1.0b3/*
+!src/ant-contrib-1.0b3
 
 src/apache-ant-1.9.6/*
 !src/apache-ant-1.9.6
@@ -19,4 +24,4 @@ src/phantomjs-2.1.1-windows/*
 src/saxonb9-1-0-8j/*
 !src/saxonb9-1-0-8j
 
-src/epub_template/OEBPS/images/*
+src/_templates/guides/epub/OEBPS/images/*

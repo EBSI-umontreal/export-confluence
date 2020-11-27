@@ -2,7 +2,7 @@
 <project name="Confluence - Migration des guides de l'EBSI en PDF/epub" basedir="." default="choix"  xmlns:if="ant:if" xmlns:unless="ant:unless">
 	
 	<property name="dossier-output" value="./out"/>
-	<property name="epub-output.tempo" value="${dossier-output}/epub"/>
+	<property name="epub-output" value="./out/epub"/>
 	
 	
 	<target name="about" description="À propos">
@@ -57,8 +57,7 @@
 		<echo>Exportation du guide du 1er cycle...</echo>
 		
 		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124093923"/>
-		<property name="cache-output" value="${dossier-output}/guide1ercycle"/>
-		<property name="xml-output" value="${cache-output}/guide1ercycle.xml"/>
+		<property name="xml-output" value="${dossier-output}/guide1ercycle.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guide1ercycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<antcall target="exportation"/>
@@ -68,8 +67,7 @@
 		<echo>Exportation du guide du 2e cycle...</echo>
 		
 		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124093925"/>
-		<property name="cache-output" value="${dossier-output}/guide2ecycle"/>
-		<property name="xml-output" value="${cache-output}/guide2ecycle.xml"/>
+		<property name="xml-output" value="${dossier-output}/guide2ecycle.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<antcall target="exportation"/>
@@ -79,8 +77,7 @@
 		<echo>Exportation du guide du docto...</echo>
 		
 		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124097476"/>
-		<property name="cache-output" value="${dossier-output}/guidedocto"/>
-		<property name="xml-output" value="${cache-output}/guidedocto.xml"/>
+		<property name="xml-output" value="${dossier-output}/guidedocto.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<antcall target="exportation"/>
@@ -90,8 +87,7 @@
 		<echo>Exportation du guide du personnel...</echo>
 		
 		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=124098127"/>
-		<property name="cache-output" value="${dossier-output}/guidepers"/>
-		<property name="xml-output" value="${cache-output}/guidepers.xml"/>
+		<property name="xml-output" value="${dossier-output}/guidepers.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<antcall target="exportation"/>
@@ -101,8 +97,7 @@
 		<echo>Exportation du cahier de protocoles du SCI6052...</echo>
 		
 		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=132187508"/>
-		<property name="cache-output" value="${dossier-output}/cahierSCI6052"/>
-		<property name="xml-output" value="${cache-output}/cahierSCI6052.xml"/>
+		<property name="xml-output" value="${dossier-output}/cahierSCI6052.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6052.epub"/>
 		<property name="epub-template" value="./_templates/cahier-sci6052"/>
 		<antcall target="exportation"/>
@@ -118,8 +113,8 @@
 			<available file="${xml-output}"/>
 			<then>
 				<echo>Fichier de cache XML present pour ce document. Que voulez-vous faire?</echo>
-				<echo>1) Utiliser les fichiers caches</echo>
-				<echo>2) Telecharger de nouveau les pages et les images</echo>
+				<echo>1) Utiliser le fichier cache</echo>
+				<echo>2) Telecharger de nouveau les pages</echo>
 				<input message="Votre choix?" validargs="1,2" addproperty="cacheOuDownload"/>
 				<condition property="cacheOuDownload.1">
 					<equals arg1="1" arg2="${cacheOuDownload}"/>
@@ -129,7 +124,7 @@
 				</condition>
 			</then>
 			<else>
-				<property name="cacheOuDownload.2" value="true"/>
+				<property name="cacheOuDownload.2"/>
 			</else>
 		</if>
 		<antcall target="exportation.cache"/>
@@ -151,14 +146,20 @@
 		<echo>Exportation : Fin!</echo>
 	</target>
 	-->
+	
+	
 	<!-- ==========================================================
-		 =                     Authentification                   =
+		 =                        Tâches XML                      =
 		 ==========================================================
 	-->
-	<target name="authentification">
-		<echo>/!\ Authentification /!\</echo>
-		<echo>Votre code d'acces et votre UNIP peuvent etre requis pour certaines taches (acces aux pages, telechargement des images, etc.)</echo>
-		<input message="Veuillez entrer votre code d'acces (vide = anonyme):" addproperty="codeAcces"/>
+	<target name="xml" depends="XML_exportation, XML_nettoyer, XML_well-formed">
+		<echo>XML : Fin!</echo>
+	</target>
+	
+	
+	<target name="XML_exportation">
+		<input message="Veuillez entrer votre code d'accès (vide = anonyme):" addproperty="codeAcces"/>
+		<echo message="nom d'utilisateur entré : ${codeAcces}"/>
 		
 		<condition property="anonyme">
 			<equals arg1="" arg2="${codeAcces}" />
@@ -168,27 +169,12 @@
 		<input unless:set="anonyme" message="Veuillez entrer votre UNIP :" addproperty="motDePasse">
 			<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
 		</input>
-	</target>
 	
-	
-	<!-- ==========================================================
-		 =                        Tâches XML                      =
-		 ==========================================================
-	-->
-	
-	
-	<target name="xml" depends="XML_exportation, XML_nettoyer, XML_well-formed">
-		<echo>XML : Fin!</echo>
-	</target>
-	
-	
-	<target name="XML_exportation" depends="authentification">
 		<echo>XML : Exportation des pages du guide dans un fichier XML...</echo>
 		<exec dir="${basedir}" executable="cmd.exe">
-			<arg line="/c casperjs transfert-guide.js --url='${wiki-url}' --codeAcces='${codeAcces}' --motDePasse='${motDePasse}' --xmlOutput='${xml-output}' --cacheOutput='${cache-output}'"/>
+			<arg line="/c casperjs transfert-guide.js --url='${wiki-url}' --codeAcces='${codeAcces}' --motDePasse='${motDePasse}' --out='${xml-output}'"/>
 		</exec>
 	</target>
-	
 	
 	<target name="XML_nettoyer">
 		<echo>XML : Correction du balisage</echo>
@@ -209,7 +195,6 @@
 		</replaceregexp>
 	</target>
 	
-	
 	<target name="XML_well-formed">
 		<echo>XML : Validation du fichier XML...</echo>
 		<xmlvalidate file="${xml-output}" lenient="true"/>
@@ -224,34 +209,30 @@
 		<echo>ePub : Fin!</echo>
 	</target>
 	
-	
 	<target name="epub_structure">
 		<echo>ePub : Creation de la structure vide</echo>
 		
-		<delete dir="${epub-output.tempo}"/>
-		<copy todir="${epub-output.tempo}" >
+		<delete dir="${epub-output}"/>
+		<copy todir="${epub-output}" >
 			<fileset dir="${epub-template}/epub" includes="**"/>
 		</copy>
 		
 		
 	</target>
 	
-	
 	<target name="epub_pages">
 		<echo>ePub : Creation des pages XHTML</echo>
 		<xslt-saxon9
 			in="${xml-output}"
 			style="${epub-template}/epub_pages.xsl"
-			destdir="${epub-output.tempo}/OEBPS/tempo1.txt"/>
-		<delete file="${epub-output.tempo}/OEBPS/tempo1.txt"/>
+			destdir="${epub-output}/OEBPS/tempo1.txt"/>
+		<delete file="${epub-output}/OEBPS/tempo1.txt"/>
 	</target>
-	
 	
 	<!-- https://stackoverflow.com/questions/5455309/how-to-read-data-line-by-line-from-a-file-using-ant-script -->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="./ant-contrib-1.0b3/ant-contrib-1.0b3.jar"/>
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="./ant-contrib-1.0b3/ant-contrib-1.0b3.jar"/>
 	<target name="epub_img">
-		<!--
 		<echo>ePub : Telechargement des images</echo>
 		<property name="epub-images" value="${epub-output}/OEBPS/images"/>
 		<xslt in="${xml-output}" style="images.xsl" out="${epub-images}/images.txt" force="yes"/>
@@ -259,26 +240,20 @@
 		<for param="line" list="${file}" delimiter="${line.separator}">
 			<sequential>
 				<echo>@{line}</echo>
+				<!-- par chance, les fichiers d'un page protégée sont accessible publiquement (sinon, réutiliser les credentials entrés pour télécharger XML -->
 				<get src="@{line}" dest="${epub-images}"/>
 			</sequential>
 		</for>
-		-->
-		<echo>ePub : Copie des images</echo>
-		<copy todir="${epub-output.tempo}/OEBPS/images" >
-			<fileset dir="${cache-output}/images" includes="**"/>
-		</copy>
 	</target>
-	
 	
 	<target name="epub_toc">
 		<echo>ePub : Creation du fichier de table des matieres</echo>
-		<xslt in="${xml-output}" style="${epub-template}/epub_toc.xsl" out="${epub-output.tempo}/OEBPS/content.opf" force="yes"/>
+		<xslt in="${xml-output}" style="${epub-template}/epub_toc.xsl" out="${epub-output}/OEBPS/content.opf" force="yes"/>
 	</target>
-	
 	
 	<target name="epub_zip">
 		<echo>ePub : Creation du conteneur .epub</echo>
-		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}"/>
+		<zip destfile="${epub-output.fichier}" basedir="${epub-output}"/>
 	</target>
 	
 	
