@@ -12,7 +12,7 @@
 		<echo> EBSI - Universite de Montreal</echo>
 		<echo> Arnaud d'Alayer 2016-2018</echo>
 		<echo />
-		<echo> Version : 20180531</echo>
+		<echo> Version : 20180803</echo>
 		<echo>+-----------------------------------------------------------+</echo>
 	</target>
 	
@@ -27,7 +27,8 @@
 		<echo>3) docto</echo>
 		<echo>4) Personnel</echo>
 		<echo>5) Cahier de protocoles du SCI6052</echo>
-		<input message="Votre choix?" validargs="1,2,3,4,5" addproperty="guideAExporter"/>
+		<echo>6) Protocoles du SCI6306</echo>
+		<input message="Votre choix?" validargs="1,2,3,4,5,6" addproperty="guideAExporter"/>
 		<condition property="choix.1">
 			<equals arg1="1" arg2="${guideAExporter}"/>
 		</condition>
@@ -43,6 +44,9 @@
 		<condition property="choix.5">
 			<equals arg1="5" arg2="${guideAExporter}"/>
 		</condition>
+		<condition property="choix.6">
+			<equals arg1="6" arg2="${guideAExporter}"/>
+		</condition>
 		
 		
 		<antcall target="export.1ercycle"/>
@@ -50,6 +54,7 @@
 		<antcall target="export.docto"/>
 		<antcall target="export.pers"/>
 		<antcall target="export.sci6052"/>
+		<antcall target="export.sci6306"/>
 	</target>
 	
 	
@@ -104,6 +109,17 @@
 		<property name="cache-output" value="${dossier-output}/cahierSCI6052"/>
 		<property name="xml-output" value="${cache-output}/cahierSCI6052.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6052.epub"/>
+		<property name="epub-template" value="./_templates/cahier-sci6052"/>
+		<antcall target="exportation"/>
+	</target>
+	
+	<target name="export.sci6306" if="choix.6">
+		<echo>Exportation des protocoles du SCI6306...</echo>
+		
+		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=134808484"/>
+		<property name="cache-output" value="${dossier-output}/cahierSCI6306"/>
+		<property name="xml-output" value="${cache-output}/cahierSCI6306.xml"/>
+		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6306.epub"/>
 		<property name="epub-template" value="./_templates/cahier-sci6052"/>
 		<antcall target="exportation"/>
 	</target>
@@ -184,7 +200,11 @@
 	
 	
 	<target name="XML_exportation" depends="authentification">
-		<echo>XML : Exportation des pages du guide dans un fichier XML...</echo>
+		<echo>XML : Exportation XML et telechargement des images...</echo>
+		<!-- Création de la structure du cache -->
+		<mkdir dir="${cache-output}"/>
+		<mkdir dir="${cache-output}/images"/>
+		<!-- Téléchargement avec script CasperJS -->
 		<exec dir="${basedir}" executable="cmd.exe">
 			<arg line="/c casperjs transfert-guide.js --url='${wiki-url}' --codeAcces='${codeAcces}' --motDePasse='${motDePasse}' --xmlOutput='${xml-output}' --cacheOutput='${cache-output}'"/>
 		</exec>

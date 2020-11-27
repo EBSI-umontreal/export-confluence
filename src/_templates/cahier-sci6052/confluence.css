@@ -113,11 +113,11 @@ div.tp{
     font-size: 10pt;
 }
 
-
-
-
-
-
+.tp h1{
+    font-family: Frutiger;
+    font-size: 16pt;
+    font-weight : bold;
+}
 .tp h2{
     font-family: Frutiger;
     font-size: 14pt;
@@ -126,16 +126,26 @@ div.tp{
 }
 .tp h3, .tp-sommaire-titre, .tp-important-titre {
     font-family: Frutiger;
-    font-size: 12pt;
-    font-weight : bold;
+    font-size: 12pt !important;
+    font-weight : bold !important;
     font-style: italic;
 }
 .tp h4 {
     font-family: Frutiger;
-    font-size: 10pt;
+    font-size: 11pt;
+    text-decoration: underline;
+}
+.tp h5 {
+    font-family: Frutiger;
+    font-size: 11pt;
     font-style: italic;
 }
-.tp h1, .tp h2, .tp h3, .tp h4{
+.tp h6 {
+    font-family: Frutiger;
+    font-size: 10pt;
+    font-weight: bold;
+}
+.tp h1, .tp h2, .tp h3, .tp h4, .tp h5, .tp h6{
     page-break-inside:avoid;
     page-break-after:avoid;
 }
@@ -199,7 +209,7 @@ div.tp-code * {
 }
 /*Confluence (d) */
 /*Espace devant les spans : ajout d'une espace via CSS*/
-.tp-nomFichier::before, .tp-nomConsacré::before{
+.tp-nomFichier::before, .tp-nomConsacré::before, .tp-code::before{
     content: "\0020";
     font-size: 10pt;
 }
