@@ -79,12 +79,12 @@
 			<h1>Table des matières</h1>
 			<ol>
 				<li><a href="toc.xhtml">Table des matières</a></li>
-				<xsl:apply-templates select="div[@class='rwui_expandable_item']"/>
+				<xsl:apply-templates select="child::div[@class='rwui_expandable_item']|child::div[@class='rwui_expandable_item  ']"/>
 			</ol>
 		</nav>
 	</xsl:template>
-	<!-- Note : il faudrait raffiner ce XPATH pour ne l'appliquer qu'aux EXPAND d'une TdM -->
-	<xsl:template match="div[@class='rwui_expandable_item']">
+	<xsl:template match="div[@class='rwui_expandable_item']|div[@class='rwui_expandable_item  ']">
+		<!-- div[contains(@class, 'rwui_expandable_item')] ambigue avec le template suivant -->
 		<li>
 			<!-- Ajouter un lien vers la première entrée, sinon aucune entrée n'apparait dans la ToC du EPUB -->
 			<a>
@@ -119,7 +119,7 @@
 					<link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
 				</head>
 				<body>
-					<h1><xsl:value-of select="normalize-space(./titre)"/></h1>
+					<h1><xsl:apply-templates select="titre" mode="copy-no-namespaces"/></h1>
 					<xsl:apply-templates select="rubriques"/>
 					<xsl:apply-templates select="bas-de-page"/>
 				</body>
@@ -127,6 +127,18 @@
 		</xsl:result-document>
 	</xsl:template>
 	
+	<!-- Enlever les indications concernant le public cible, ex. "(1er cycle)" -->
+	<xsl:template match="titre" mode="copy-no-namespaces">
+		<!--<em><xsl:value-of select="normalize-space(.)"/></em>-->
+		<xsl:choose>
+			<xsl:when test="contains(., ' (')">
+				<xsl:value-of select="normalize-space(substring-before(., ' ('))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="normalize-space(.)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	
 	<xsl:template match="rubriques">
 		<xsl:apply-templates mode="copy-no-namespaces"/>
@@ -138,6 +150,7 @@
 	</xsl:template>
 	
 	
+	<!-- Traiter les images -->
 	<xsl:template match="img" mode="copy-no-namespaces">
 	
 		<div style="text-indent:0;text-align:center;margin-right:auto;margin-left:auto;width:99%;page-break-before:auto;page-break-inside:avoid;page-break-after:auto;">
@@ -168,6 +181,7 @@
 		</div>
 		
 	</xsl:template>
+	
 	
 	<!-- Traiter les liens entre les pages -->
 	<xsl:template match="@href">
@@ -220,6 +234,9 @@
 	<!--Conf6.7+ Éliminer les colgroup -->
 	<xsl:template match="colgroup" mode="copy-no-namespaces"></xsl:template>
 	
+	
+	<!-- FIX - Éliminer le tableau de consitution des comités (trop large) -->
+	<xsl:template match="div[contains(@class, 'tableau-comités')]" mode="copy-no-namespaces"></xsl:template>
 	
 	
 	<!-- Traitements génériques -->

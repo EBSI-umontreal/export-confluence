@@ -1,31 +1,31 @@
 src/out/*
-src/out/
+!src/out/.gitkeep
 src/logs/*
-src/logs/
+!src/logs/.gitkeep
 
-src/ansicon184/*
-!src/ansicon184
+src/vendor/ansicon184/*
+!src/vendor/ansicon184/.gitkeep
 
-src/ant-contrib-1.0b3/*
-!src/ant-contrib-1.0b3
+src/vendor/ant-contrib-1.0b3/*
+!src/vendor/ant-contrib-1.0b3/.gitkeep
 
-src/apache-ant-1.10.4/*
-!src/apache-ant-1.10.4
+src/vendor/apache-ant-1.10.4/*
+!src/vendor/apache-ant-1.10.4/.gitkeep
 
-src/calibre-portable_3.46/*
-!src/calibre-portable_3.46
+src/vendor/calibre-portable-3.46/*
+!src/vendor/calibre-portable-3.46/.gitkeep
 
-src/casperjs-1.1.4-1/*
-!src/casperjs-1.1.4-1
+src/vendor/casperjs-1.1.4-1/*
+!src/vendor/casperjs-1.1.4-1/.gitkeep
 
-src/jdk1.8.0_172_x64/*
-!src/jdk1.8.0_172_x64
+src/vendor/jdk8u265-b01/*
+!src/vendor/jdk8u265-b01/.gitkeep
 
-src/phantomjs-2.1.1-windows/*
-!src/phantomjs-2.1.1-windows
+src/vendor/phantomjs-2.1.1-windows/*
+!src/vendor/phantomjs-2.1.1-windows/.gitkeep
 
-src/SaxonHE9-8-0-12J/*
-!src/SaxonHE9-8-0-12J
+src/vendor/SaxonHE9-8-0-12J/*
+!src/vendor/SaxonHE9-8-0-12J/.gitkeep
 
 src/_templates/cahier-sci6052/epub/OEBPS/fonts/*
 src/_templates/cahier-sci6052/ressources/*
@@ -35,3 +35,4 @@ src/_templates/protocole-sci6306/epub/OEBPS/fonts/*
 src/_templates/protocole-sci6306/ressources/*
 src/_templates/guides/epub/OEBPS/images/*
 src/_templates/guides/epub/OEBPS/fonts/*
+src/build_test_cd.xml

@@ -10,9 +10,9 @@
 		<echo>   Confluence - Migration des guides de l'EBSI en PDF/epub   </echo>
 		<echo>+-----------------------------------------------------------+</echo>
 		<echo> EBSI - Universite de Montreal</echo>
-		<echo> Arnaud d'Alayer 2016-2018</echo>
+		<echo> Arnaud d'Alayer 2016-2020</echo>
 		<echo />
-		<echo> Version : 20180803</echo>
+		<echo> Version : 20200817</echo>
 		<echo>+-----------------------------------------------------------+</echo>
 	</target>
 	
@@ -77,7 +77,7 @@
 			2) remplacer &quote; par &apos;
 			3) remettre les caractères unicodes : ex. &copy; -> ©
 		-->
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2019-2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -90,7 +90,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2019-2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -103,7 +103,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2019-2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -115,6 +115,9 @@
 		<property name="xml-output" value="${cache-output}/guidepers.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
+		<property name="pdf-output.fichier" value="${dossier-output}/guidepers.pdf"/>
+		<!--<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:3.5in&apos;&gt;Guide&#160;du&#160;personnel&lt;/td&gt;&lt;td style=&apos;width:1in;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:3.5in&apos;&gt;©EBSI&#160;2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>-->
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -148,6 +151,8 @@
 		<property name="xml-output" value="${cache-output}/cahierSCI7003.xml"/>
 		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI7003.epub"/>
 		<property name="epub-template" value="./_templates/cahier-sci7003"/>
+		<property name="pdf-output.fichier" value="${dossier-output}/sci7003_protocoles.pdf"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;SCI7003 - Protocoles (Hiver 2020)&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;© Christine Dufour 2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -328,8 +333,8 @@
 	
 	
 	<!-- https://stackoverflow.com/questions/5455309/how-to-read-data-line-by-line-from-a-file-using-ant-script -->
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="./ant-contrib-1.0b3/ant-contrib-1.0b3.jar"/>
-	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="./ant-contrib-1.0b3/ant-contrib-1.0b3.jar"/>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="./vendor/ant-contrib-1.0b3/ant-contrib-1.0b3.jar"/>
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="./vendor/ant-contrib-1.0b3/ant-contrib-1.0b3.jar"/>
 	<target name="epub_img">
 		<!--
 		<echo>ePub : Telechargement des images</echo>
@@ -404,7 +409,7 @@
 		<sequential>
 			<echo>Transformation XSLT avec Saxon 9 : in=@{in} out=@{destdir} style=@{style}</echo>
 			<java classname="net.sf.saxon.Transform"
-				classpath="./SaxonHE9-8-0-12J/saxon9he.jar"
+				classpath="./vendor/SaxonHE9-8-0-12J/saxon9he.jar"
 				fork="true">
 				<arg value="-o:@{destdir}"/>
 				<arg value="@{in}"/>
