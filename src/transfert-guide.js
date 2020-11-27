@@ -80,7 +80,11 @@ function spider(url) {
 		//capturer(this);
 		var pageTitle = this.fetchText('title');
 		var pageTitre = this.evaluate(function() {
+		    /* 20180707 - À adapter pour cahier VS guides 
 			var titreH1 = document.getElementsByClassName("titre");
+			return $('<div/>').html(titreH1).text();
+			*/
+			var titreH1 = document.getElementById("title-text");
 			return $('<div/>').html(titreH1).text();
 		});
 		

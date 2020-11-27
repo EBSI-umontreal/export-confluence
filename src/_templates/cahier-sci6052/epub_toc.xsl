@@ -1,53 +1,61 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf" xmlns="http://www.idpf.org/2007/opf" exclude-result-prefixes="opf">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ncx="http://www.daisy.org/z3986/2005/ncx/" xmlns="http://www.daisy.org/z3986/2005/ncx/" exclude-result-prefixes="ncx">
 	<xsl:output method="xml" version="1.0" indent="yes" encoding="utf-8" omit-xml-declaration="no" />
 	
 	
 	<xsl:template match="guide">
-		<package version="2.0" unique-identifier="bookid">
-			<metadata>
-				<dc:title>Guide EBSI</dc:title> 
-				<dc:creator>EBSI</dc:creator>
-				<dc:language>fr-ca</dc:language> 
-				<dc:rights></dc:rights> 
-				<dc:publisher>EBSI</dc:publisher> 
-				<dc:identifier id="bookid">https://wiki.umontreal.ca/display/EBSI/Guide+du+personnel</dc:identifier>
-			</metadata>
-			
-			<xsl:call-template name="manifest"/>
-			<xsl:call-template name="spine"/>
-		</package>
+		<ncx version="2005-1" xml:lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
+			<xsl:call-template name="metadata"/>
+			<xsl:call-template name="title"/>
+			<xsl:call-template name="navigation"/>
+		</ncx>
 	</xsl:template>
 	
-	<xsl:template name="manifest">
-		<manifest>
-			<item id="style" href="stylesheet.css" media-type="text/css"/>
-			<item id="pagetemplate" href="page-template.xpgt" media-type="application/vnd.adobe-page-template+xml"/>
-			
-			<xsl:for-each select="page">
-				<xsl:variable name="id" select="./url"/>
-				<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
-				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('p', $pageid)}" href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml" />
-			</xsl:for-each>
-			
-			<xsl:for-each select="//img">
-				<xsl:variable name="urlImg" select="@src"/>
-				<xsl:variable name="imgFile" select="substring-before(tokenize($urlImg, '/')[last()], '?')"/>
-				<xsl:variable name="imgFileExt" select="substring-after($imgFile, '.')"/>
-				<item xmlns="http://www.idpf.org/2007/opf" id="{concat('i', $imgFile)}" href="{concat('images/', $imgFile)}" media-type="{concat('image/', $imgFileExt)}" />
-			</xsl:for-each>
-			
-		</manifest>
+	<xsl:template name="metadata">
+		<head>
+			<meta name="dtb:uid" content="{normalize-space(//span[@id = 'metadonnées-uuid'])}"/>
+			<meta name="dtb:depth" content="1" />
+			<meta name="dtb:totalPageCount" content="0"/>
+			<meta name="dtb:maxPageNumber" content="0"/>
+		</head>
 	</xsl:template>
 	
-	<xsl:template name="spine">
-		<spine toc="ncx">
+	<xsl:template name="title">
+		<docTitle>
+			<text><xsl:value-of select="normalize-space(//span[@id = 'metadonnées-titre'])"/> : <xsl:value-of select="normalize-space(//span[@id = 'metadonnées-date'])"/></text>
+		</docTitle>
+	</xsl:template>
+	
+	<xsl:template name="navigation">
+		<navMap>
+			<!-- Couverture -->
+			<navPoint id="navpoint1" playOrder="1">
+				<navLabel>
+					<text>Couverture</text>
+				</navLabel>
+				<content src="cover.xhtml"/>
+			</navPoint>
+			<navPoint id="navpoint2" playOrder="2">
+				<navLabel>
+					<text>Table des matières</text>
+				</navLabel>
+				<content src="toc.xhtml"/>
+			</navPoint>
+			
 			<xsl:for-each select="page">
-				<xsl:variable name="id" select="./url"/>
-				<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
-				<itemref idref="{concat('p', $pageid)}"/>
+				<xsl:if test="position()>1"><!--exclure la page de la TdM -->
+					<xsl:variable name="id" select="./url"/>
+					<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
+					<xsl:variable name="position" select="position()+1"/>
+					<navPoint id="{concat('navpoint', $position)}" playOrder="{$position}">
+						<navLabel>
+							<text><xsl:value-of select="normalize-space(./titre)"/></text>
+						</navLabel>
+						<content src="{concat($pageid, '.xhtml')}"/>
+					</navPoint>
+				</xsl:if>
 			</xsl:for-each>
-		</spine>
+		</navMap>
 	</xsl:template>
 	
 </xsl:stylesheet>

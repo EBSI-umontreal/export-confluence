@@ -3,25 +3,25 @@ src/out/
 src/logs/*
 src/logs/
 
-src/ansicon/*
-!src/ansicon
+src/ansicon184/*
+!src/ansicon184
 
 src/ant-contrib-1.0b3/*
 !src/ant-contrib-1.0b3
 
-src/apache-ant-1.9.6/*
-!src/apache-ant-1.9.6
+src/apache-ant-1.10.4/*
+!src/apache-ant-1.10.4
 
-src/jdk1.8.0_152/*
-!src/jdk1.8.0_152
+src/casperjs-1.1.4-1/*
+!src/casperjs-1.1.4-1
 
-src/n1k0-casperjs-54a7a05/*
-!src/n1k0-casperjs-54a7a05
+src/jdk1.8.0_172_x64/*
+!src/jdk1.8.0_172_x64
 
 src/phantomjs-2.1.1-windows/*
 !src/phantomjs-2.1.1-windows
 
-src/saxonb9-1-0-8j/*
-!src/saxonb9-1-0-8j
+src/SaxonHE9-8-0-12J/*
+!src/SaxonHE9-8-0-12J
 
 src/_templates/guides/epub/OEBPS/images/*

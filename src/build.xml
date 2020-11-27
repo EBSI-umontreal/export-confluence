@@ -143,6 +143,7 @@
 	
 	<target name="exportation.download" if="cacheOuDownload.2">
 		<echo>Exportation avec telechargement des fichiers</echo>
+		<delete dir="${cache-output}"/>
 		<antcall target="xml"/>
 		<antcall target="epub"/>
 	</target>
@@ -207,6 +208,20 @@
 			<regexp pattern="&lt;img([^>]*)&gt;"/>
 			<substitution expression="&lt;img\1/&gt;"/>
 		</replaceregexp>
+		<!--Conf6.7+ corriger les col non fermés -->
+		<replaceregexp file="${xml-output}" flags="g">
+			<regexp pattern="&lt;col&gt;"/>
+			<substitution expression="&lt;hr/&gt;"/>
+		</replaceregexp>
+		<!--Conf6.7+ supprimer les valeurs d'attributs conf-macro & output-block -->
+		<replaceregexp file="${xml-output}" flags="g">
+			<regexp pattern="(\s*)conf-macro"/>
+			<substitution expression=""/>
+		</replaceregexp>
+		<replaceregexp file="${xml-output}" flags="g">
+			<regexp pattern="(\s*)output-block"/>
+			<substitution expression=""/>
+		</replaceregexp>
 	</target>
 	
 	
@@ -220,7 +235,7 @@
 		 =                      Tâches ePub                       =
 		 ==========================================================
 	-->
-	<target name="epub" depends="epub_structure, epub_pages, epub_img, epub_toc, epub_zip">
+	<target name="epub" depends="epub_structure, epub_pages, epub_img, epub_spine, epub_toc, epub_zip">
 		<echo>ePub : Fin!</echo>
 	</target>
 	
@@ -232,8 +247,6 @@
 		<copy todir="${epub-output.tempo}" >
 			<fileset dir="${epub-template}/epub" includes="**"/>
 		</copy>
-		
-		
 	</target>
 	
 	
@@ -270,16 +283,33 @@
 	</target>
 	
 	
+	<target name="epub_spine">
+		<echo>ePub : Creation du fichier content.opf</echo>
+		<xslt in="${xml-output}" style="${epub-template}/epub_spine.xsl" out="${epub-output.tempo}/OEBPS/content.opf" force="yes"/>
+	</target>
+	
+	
 	<target name="epub_toc">
-		<echo>ePub : Creation du fichier de table des matieres</echo>
-		<xslt in="${xml-output}" style="${epub-template}/epub_toc.xsl" out="${epub-output.tempo}/OEBPS/content.opf" force="yes"/>
+		<echo>ePub : Creation du fichier toc.ncx</echo>
+		<xslt in="${xml-output}" style="${epub-template}/epub_toc.xsl" out="${epub-output.tempo}/OEBPS/toc.ncx" force="yes"/>
 	</target>
 	
 	
 	<target name="epub_zip">
 		<echo>ePub : Creation du conteneur .epub</echo>
-		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}"/>
+		<!-- Two steps because mimetype must go in first, uncompressed. Looks like ant puts later zipped files in first, so mimetype is in second zip task. -->
+		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}" excludes="mimetype" compress="true" zip64Mode="never"/>
+		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}" includes="mimetype" update="true" keepcompression="true" compress="false" createunicodeextrafields="never" zip64Mode="never"/>
 	</target>
+	
+	<target name="zipepub">
+
+
+<zip destfile="${output.dir}${file.separator}${dita.map.filename.root}.epub"
+basedir="${epub.temp.dir}"
+
+/>
+</target>
 	
 	
 	
@@ -295,7 +325,7 @@
 		<sequential>
 			<echo>Transformation XSLT avec Saxon 9 : in=@{in} out=@{destdir} style=@{style}</echo>
 			<java classname="net.sf.saxon.Transform"
-				classpath="./saxonb9-1-0-8j/saxon9.jar"
+				classpath="./SaxonHE9-8-0-12J/saxon9he.jar"
 				fork="true">
 				<arg value="-o:@{destdir}"/>
 				<arg value="@{in}"/>
