@@ -79,17 +79,20 @@ function spider(url) {
 		//ARNAUD : Produire noeud XML des infos de la page
 		//capturer(this);
 		var pageTitle = this.fetchText('title');
+		var pageTitre = this.getElementsInfo('#main-content > div.guide-ebsi.conf-macro.output-block > div.titre.conf-macro.output-block')[0].text;
+		/*
 		var pageTitre = this.evaluate(function() {
-			/*Titre du template des guides*/
+			//Titre du template des guides
 			if (document.getElementsByClassName("titre").length !== 0){
 				var titreH1 = document.getElementsByClassName("titre");
 			}
-			/*Titre du template du cahier SCI6052*/
+			//Titre du template du cahier SCI6052
 			else {
 				var titreH1 = document.getElementById("title-text");
 			}
 			return $('<div/>').html(titreH1).text();
 		});
+		*/
 		
 		
 		var rubriques = this.evaluate(function() {
@@ -210,6 +213,10 @@ casper.start(startUrl, function() {
 			'input[name ="os_password"]' : motDePasse
 		}, true);
 		//this.capture('./logs/login.png');
+		/*casper.waitForSelector('#loginButton', function () {
+			casper.click('#loginButton');
+			casper.capture('./logs/login2.png');
+		});*/
 		this.thenClick('#loginButton');
 	}
 });
@@ -232,7 +239,8 @@ casper.on('page.error', function exitWithError(msg, stack) {
 			frame.line
 		);
 	}, '');
-	this.die(['Client-side error', msg, stack].join('\n'), 1);
+	//this.die(['Client-side error', msg, stack].join('\n'), 1);
+	this.echo(['Client-side error', msg, stack].join('\n'), 1);
 });
 
 /* Voir le résultat de console.log
