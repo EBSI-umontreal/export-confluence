@@ -79,7 +79,7 @@
 			<h1>Table des matières</h1>
 			<ol>
 				<li><a href="toc.xhtml">Table des matières</a></li>
-				<xsl:apply-templates select="child::div[@class='rwui_expandable_item']|child::div[@class='rwui_expandable_item  ']"/>
+				<xsl:apply-templates select="child::div[translate(@class, ' ', '')='rwui_expandable_item']"/>
 			</ol>
 		</nav>
 	</xsl:template>
