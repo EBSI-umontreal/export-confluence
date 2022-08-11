@@ -77,7 +77,7 @@
 			2) remplacer &quote; par &apos;
 			3) remettre les caractères unicodes : ex. &copy; -> ©
 		-->
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -90,7 +90,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -103,7 +103,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -117,7 +117,7 @@
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidepers.pdf"/>
 		<!--<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:3.5in&apos;&gt;Guide&#160;du&#160;personnel&lt;/td&gt;&lt;td style=&apos;width:1in;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:3.5in&apos;&gt;©EBSI&#160;2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>-->
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
