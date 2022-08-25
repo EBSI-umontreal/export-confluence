@@ -83,7 +83,7 @@
 			</ol>
 		</nav>
 	</xsl:template>
-	<xsl:template match="div[@class='rwui_expandable_item']|div[@class='rwui_expandable_item  ']">
+	<xsl:template match="div[translate(@class, ' ', '')='rwui_expandable_item']">
 		<!-- div[contains(@class, 'rwui_expandable_item')] ambigue avec le template suivant -->
 		<li>
 			<!-- Ajouter un lien vers la première entrée, sinon aucune entrée n'apparait dans la ToC du EPUB -->

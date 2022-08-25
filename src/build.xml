@@ -77,7 +77,7 @@
 			2) remplacer &quote; par &apos;
 			3) remettre les caractères unicodes : ex. &copy; -> ©
 		-->
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -90,7 +90,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -103,7 +103,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -152,7 +152,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI7003.epub"/>
 		<property name="epub-template" value="./_templates/cahier-sci7003"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/sci7003_protocoles.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;SCI7003 - Protocoles (Hiver 2020)&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;© Christine Dufour 2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;%&apos;&gt;SCI7003 - Protocoles (Hiver 2020)&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;© Christine Dufour 2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -387,6 +387,7 @@
 			<arg value="${pdf-output.fichier}"/>
 			<!-- liste des paramètres : https://manual.calibre-ebook.com/generated/en/ebook-convert.html -->
 			<arg value="--embed-all-fonts"/>
+			<arg value="--disable-font-rescaling"/>
 			<arg value="--enable-heuristics"/>
 			<arg value="--uncompressed-pdf"/>
 			<arg value="--paper-size=&quot;letter&quot;"/>
