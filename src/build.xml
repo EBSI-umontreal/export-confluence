@@ -10,9 +10,9 @@
 		<echo>   Confluence - Migration des guides de l'EBSI en PDF/epub   </echo>
 		<echo>+-----------------------------------------------------------+</echo>
 		<echo> EBSI - Universite de Montreal</echo>
-		<echo> Arnaud d'Alayer 2016-2020</echo>
+		<echo> Arnaud d'Alayer 2016-2023</echo>
 		<echo />
-		<echo> Version : 20200817</echo>
+		<echo> Version : 20230825</echo>
 		<echo>+-----------------------------------------------------------+</echo>
 	</target>
 	
@@ -26,10 +26,8 @@
 		<echo>2) 2e cycle</echo>
 		<echo>3) docto</echo>
 		<echo>4) Personnel</echo>
-		<echo>5) Cahier de protocoles du SCI6052</echo>
-		<echo>6) Protocoles du SCI6306</echo>
-		<echo>7) Protocoles du SCI7003</echo>
-		<input message="Votre choix?" validargs="1,2,3,4,5,6,7" addproperty="guideAExporter"/>
+		
+		<input message="Votre choix?" validargs="1,2,3,4" addproperty="guideAExporter"/>
 		<condition property="choix.1">
 			<equals arg1="1" arg2="${guideAExporter}"/>
 		</condition>
@@ -42,24 +40,12 @@
 		<condition property="choix.4">
 			<equals arg1="4" arg2="${guideAExporter}"/>
 		</condition>
-		<condition property="choix.5">
-			<equals arg1="5" arg2="${guideAExporter}"/>
-		</condition>
-		<condition property="choix.6">
-			<equals arg1="6" arg2="${guideAExporter}"/>
-		</condition>
-		<condition property="choix.7">
-			<equals arg1="7" arg2="${guideAExporter}"/>
-		</condition>
 		
 		
 		<antcall target="export.1ercycle"/>
 		<antcall target="export.2ecycle"/>
 		<antcall target="export.docto"/>
 		<antcall target="export.pers"/>
-		<antcall target="export.sci6052"/>
-		<antcall target="export.sci6306"/>
-		<antcall target="export.sci7003"/>
 	</target>
 	
 	
@@ -77,7 +63,7 @@
 			2) remplacer &quote; par &apos;
 			3) remettre les caractères unicodes : ex. &copy; -> ©
 		-->
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -90,7 +76,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -103,7 +89,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -116,43 +102,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidepers.pdf"/>
-		<!--<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:3.5in&apos;&gt;Guide&#160;du&#160;personnel&lt;/td&gt;&lt;td style=&apos;width:1in;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:3.5in&apos;&gt;©EBSI&#160;2020-2021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>-->
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2022-2023&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
-		<antcall target="exportation"/>
-	</target>
-	
-	<target name="export.sci6052" if="choix.5">
-		<echo>Exportation du cahier de protocoles du SCI6052...</echo>
-		
-		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=132187508"/>
-		<property name="cache-output" value="${dossier-output}/cahierSCI6052"/>
-		<property name="xml-output" value="${cache-output}/cahierSCI6052.xml"/>
-		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6052.epub"/>
-		<property name="epub-template" value="./_templates/cahier-sci6052"/>
-		<antcall target="exportation"/>
-	</target>
-	
-	<target name="export.sci6306" if="choix.6">
-		<echo>Exportation des protocoles du SCI6306...</echo>
-		
-		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=134808484"/>
-		<property name="cache-output" value="${dossier-output}/cahierSCI6306"/>
-		<property name="xml-output" value="${cache-output}/cahierSCI6306.xml"/>
-		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI6306.epub"/>
-		<property name="epub-template" value="./_templates/protocole-sci6306"/>
-		<antcall target="exportation"/>
-	</target>
-	
-	<target name="export.sci7003" if="choix.7">
-		<echo>Exportation du cahier de protocoles du SCI7003...</echo>
-		
-		<property name="wiki-url" value="https://wiki.umontreal.ca/pages/viewpage.action?pageId=141165851"/>
-		<property name="cache-output" value="${dossier-output}/cahierSCI7003"/>
-		<property name="xml-output" value="${cache-output}/cahierSCI7003.xml"/>
-		<property name="epub-output.fichier" value="${dossier-output}/cahierSCI7003.epub"/>
-		<property name="epub-template" value="./_templates/cahier-sci7003"/>
-		<property name="pdf-output.fichier" value="${dossier-output}/sci7003_protocoles.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;table style=&apos;width:100%&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;%&apos;&gt;SCI7003 - Protocoles (Hiver 2020)&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;© Christine Dufour 2020&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
