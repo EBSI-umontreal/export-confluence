@@ -102,7 +102,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidepers.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
