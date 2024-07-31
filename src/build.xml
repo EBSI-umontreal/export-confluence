@@ -3,6 +3,7 @@
 	
 	<property name="dossier-output" value="./out"/>
 	<property name="epub-output.tempo" value="${dossier-output}/epub"/>
+	<property name="rag-output.tempo" value="${dossier-output}/rag"/>
 	
 	
 	<target name="about" description="À propos">
@@ -63,7 +64,7 @@
 			2) remplacer &quote; par &apos;
 			3) remettre les caractères unicodes : ex. &copy; -> ©
 		-->
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -76,7 +77,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -89,7 +90,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -102,7 +103,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidepers.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2023-2024&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -138,6 +139,7 @@
 		<echo>Exportation avec fichier de cache</echo>
 		<antcall target="epub"/>
 		<antcall target="pdf"/>
+		<antcall target="rag"/>
 	</target>
 	
 	<target name="exportation.download" if="cacheOuDownload.2">
@@ -146,6 +148,7 @@
 		<antcall target="xml"/>
 		<antcall target="epub"/>
 		<antcall target="pdf"/>
+		<antcall target="rag"/>
 	</target>
 	
 	<!--<target name="exportation" depends="xml, epub">
@@ -322,6 +325,32 @@
 		<!-- Two steps because mimetype must go in first, uncompressed. Looks like ant puts later zipped files in first, so mimetype is in second zip task. -->
 		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}" excludes="mimetype" compress="true" zip64Mode="never"/>
 		<zip destfile="${epub-output.fichier}" basedir="${epub-output.tempo}" includes="mimetype" update="true" keepcompression="true" compress="false" createunicodeextrafields="never" zip64Mode="never"/>
+	</target>
+	
+	<!-- ==========================================================
+		 =                      Tâches RAG                        =
+		 ==========================================================
+	-->
+	<target name="rag" depends="rag_structure, rag_pages">
+		<echo>RAG : Fin!</echo>
+	</target>
+	
+	
+	<target name="rag_structure">
+		<echo>RAG : Creation de la structure vide</echo>
+		
+		<delete dir="${rag-output.tempo}"/>
+		<mkdir  dir="${rag-output.tempo}"/>
+	</target>
+	
+	
+	<target name="rag_pages">
+		<echo>RAG : Creation des pages TXT</echo>
+		<xslt-saxon9
+			in="${xml-output}"
+			style="${epub-template}/rag_pages.xsl"
+			destdir="${rag-output.tempo}/tempo1.txt"/>
+		<delete file="${rag-output.tempo}/tempo1.txt"/>
 	</target>
 	
 	
