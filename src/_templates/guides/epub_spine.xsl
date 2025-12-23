@@ -6,6 +6,22 @@
 	xmlns="http://www.idpf.org/2007/opf">
 	<xsl:output method="xml" version="1.0" indent="yes" encoding="utf-8" omit-xml-declaration="no"/>
 
+	<!-- Clé pour détecter les pages en double basée sur le pageId extrait -->
+	<xsl:key name="pages-by-id" match="page" use="
+		if (contains(./url, 'pageId=')) then 
+			if (contains(substring-after(./url, 'pageId='), '#')) then 
+				substring-before(substring-after(./url, 'pageId='), '#')
+			else 
+				substring-after(./url, 'pageId=')
+		else if (contains(./url, '/pages/')) then
+			let $afterPages := substring-after(./url, '/pages/')
+			return if (contains($afterPages, '/')) then 
+				substring-before($afterPages, '/')
+			else 
+				$afterPages
+		else 
+			./url
+	"/>
 
 	<xsl:template match="guide">
 		<package version="3.0" unique-identifier="BookId" xml:lang="{normalize-space(//span[@id = 'metadonnées-langue'])}">
@@ -74,9 +90,41 @@
 			<xsl:for-each select="page">
 				<xsl:if test="position()>1"><!--exclure la page de la TdM -->
 					<xsl:variable name="id" select="./url"/>
-					<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
-					<item xmlns="http://www.idpf.org/2007/opf" id="{concat('page_', $pageid)}"
-						href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml"/>
+					<!-- Extraire le pageId pour couvrir ?pageId= et /pages/XXXXX -->
+					<xsl:variable name="pageid">
+						<xsl:choose>
+							<xsl:when test="contains($id, 'pageId=')">
+								<xsl:variable name="after" select="substring-after($id, 'pageId=')"/>
+								<xsl:choose>
+									<xsl:when test="contains($after, '#')">
+										<xsl:value-of select="substring-before($after, '#')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$after"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="contains($id, '/pages/')">
+								<xsl:variable name="afterPages" select="substring-after($id, '/pages/')"/>
+								<xsl:choose>
+									<xsl:when test="contains($afterPages, '/')">
+										<xsl:value-of select="substring-before($afterPages, '/')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$afterPages"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$id"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<!-- Ne générer l'entrée manifest que pour la première occurrence de chaque pageId -->
+					<xsl:if test="generate-id(.) = generate-id(key('pages-by-id', $pageid)[1])">
+						<item xmlns="http://www.idpf.org/2007/opf" id="{concat('page_', $pageid)}"
+							href="{concat($pageid, '.xhtml')}" media-type="application/xhtml+xml"/>
+					</xsl:if>
 				</xsl:if>
 			</xsl:for-each>
 
@@ -110,8 +158,40 @@
 			<xsl:for-each select="page">
 				<xsl:if test="position()>1"><!--exclure la page de la TdM -->
 					<xsl:variable name="id" select="./url"/>
-					<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
-					<itemref idref="{concat('page_', $pageid)}"/>
+					<!-- Même extraction de pageId que dans le manifest -->
+					<xsl:variable name="pageid">
+						<xsl:choose>
+							<xsl:when test="contains($id, 'pageId=')">
+								<xsl:variable name="after" select="substring-after($id, 'pageId=')"/>
+								<xsl:choose>
+									<xsl:when test="contains($after, '#')">
+										<xsl:value-of select="substring-before($after, '#')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$after"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="contains($id, '/pages/')">
+								<xsl:variable name="afterPages" select="substring-after($id, '/pages/')"/>
+								<xsl:choose>
+									<xsl:when test="contains($afterPages, '/')">
+										<xsl:value-of select="substring-before($afterPages, '/')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$afterPages"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$id"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<!-- Ne générer l'entrée spine que pour la première occurrence de chaque pageId -->
+					<xsl:if test="generate-id(.) = generate-id(key('pages-by-id', $pageid)[1])">
+						<itemref idref="{concat('page_', $pageid)}"/>
+					</xsl:if>
 				</xsl:if>
 			</xsl:for-each>
 		</spine>

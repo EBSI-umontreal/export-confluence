@@ -163,12 +163,11 @@ function spider(url) {
 			Array.prototype.forEach.call(__utils__.findAll('.table-des-matières a[href]'), function(e) {
 				var lien = e.getAttribute('href');
 				//console.log("lien : " + lien);
-				/*20180726 - Ne pas crowler les liens qui ne sont pas sous la forme viewpage.action?pageId=*/
-				if (lien.indexOf('viewpage.action?pageId=') > -1){
-					//Ignorer les ancres dans les liens
+				/* Accepter les deux formats d'URL Confluence: viewpage.action?pageId=XXXX et /spaces/.../pages/XXXX */
+				if (lien.indexOf('viewpage.action?pageId=') > -1 || (lien.indexOf('/spaces/') > -1 && lien.indexOf('/pages/') > -1)){
+					// Ignorer les ancres dans les liens
 					if (lien.indexOf('#') > -1){
 						lien = lien.substr(0, lien.indexOf('#'));
-						//console.log("lienRetouche : " + lien);
 					}
 					links.push(lien);
 				}

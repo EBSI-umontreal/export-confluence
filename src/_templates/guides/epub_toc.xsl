@@ -45,7 +45,33 @@
 			<xsl:for-each select="page">
 				<xsl:if test="position()>1"><!--exclure la page de la TdM -->
 					<xsl:variable name="id" select="./url"/>
-					<xsl:variable name="pageid" select="substring-after($id, 'pageId=')"/>
+					<!-- Extraire le pageId de l'URL, qui peut être dans deux formats :
+					     - https://wiki.umontreal.ca/pages/viewpage.action?pageId=124093923
+					     - /spaces/EBSI/pages/124093923/...
+					-->
+					<xsl:variable name="pageid">
+						<xsl:choose>
+							<!-- Format: pageId=XXXXX -->
+							<xsl:when test="contains($id, 'pageId=')">
+								<xsl:value-of select="substring-after($id, 'pageId=')"/>
+							</xsl:when>
+							<!-- Format: /spaces/EBSI/pages/XXXXX/... -->
+							<xsl:when test="contains($id, '/spaces/EBSI/pages/')">
+								<xsl:variable name="afterPages" select="substring-after($id, '/spaces/EBSI/pages/')"/>
+								<xsl:choose>
+									<xsl:when test="contains($afterPages, '/')">
+										<xsl:value-of select="substring-before($afterPages, '/')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$afterPages"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$id"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<xsl:variable name="position" select="position()+1"/>
 					<navPoint id="{concat('navpoint', $position)}" playOrder="{$position}">
 						<navLabel>

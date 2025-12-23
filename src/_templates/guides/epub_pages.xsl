@@ -4,10 +4,31 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:exp="http://export-confluence"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns="http://www.w3.org/1999/xhtml" 
 	exclude-result-prefixes="html xsl">
 	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" />
 	<!-- Ne pas faire de sortie indentée pour éviter les problèmes d'espaces avant ou après les <span> -->
+	
+	<!-- Clé pour détecter les pages en double basée sur le pageId extrait -->
+	<xsl:key name="pages-by-id" match="page" use="
+		if (contains(./url, 'pageId=')) then 
+			if (contains(substring-after(./url, 'pageId='), '#')) then 
+				substring-before(substring-after(./url, 'pageId='), '#')
+			else 
+				substring-after(./url, 'pageId=')
+		else if (contains(./url, '/pages/')) then
+			let $afterPages := substring-after(./url, '/pages/')
+			return if (contains($afterPages, '/')) then 
+				substring-before($afterPages, '/')
+			else 
+				$afterPages
+		else 
+			./url
+	"/>
+
+	<!-- Racine du document source pour les recherches de clé sans dépendre du contexte -->
+	<xsl:variable name="docRoot" select="/" as="node()"/>
 	
 	<!-- ==================
 		 COUVERTURE
@@ -91,14 +112,38 @@
 				<xsl:attribute name="href">
 					<xsl:value-of select="exp:traiterLiens((.//a/@href)[1])"/>
 				</xsl:attribute>
-				<!-- Enlever la numérotation provenant de Confluence pour restyler -->
-				<xsl:value-of select="normalize-space(substring-after(./a, '.'))"/>
+				<!-- Extraire le titre depuis le button, qui contient maintenant le texte "X. Titre" -->
+				<xsl:value-of select="normalize-space(substring-after(./button, '.'))"/>
 			</a>
 			<xsl:apply-templates select="div[contains(@class, 'rwui_expandable_item_body')]"/>
 		</li>
 	</xsl:template>
 	<xsl:template match="div[contains(@class, 'rwui_expandable_item_body')]">
 		<xsl:apply-templates select="ol" mode="copy-no-namespaces"/>
+	</xsl:template>
+	
+	<!-- Traiter les <li> sans lien direct dans les listes de la TOC (ex: "Services de l'EBSI") -->
+	<xsl:template match="ol/li[not(a)]" mode="copy-no-namespaces">
+		<li>
+			<xsl:variable name="firstLink" select="(.//a/@href)[1]"/>
+			<xsl:variable name="labelText">
+				<xsl:value-of select="normalize-space(string-join(text()[not(parent::a)], ' '))"/>
+			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="$firstLink">
+					<a>
+						<xsl:attribute name="href">
+							<xsl:value-of select="exp:traiterLiens($firstLink)"/>
+						</xsl:attribute>
+						<xsl:value-of select="$labelText"/>
+					</a>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$labelText"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:apply-templates select="node()[not(self::text())]" mode="copy-no-namespaces"/>
+		</li>
 	</xsl:template>
 	
 	<!-- ==================
@@ -108,7 +153,42 @@
 	<xsl:template match="//page[position()>1]">
 		<!-- CRÉATION DU FICHIER DE SORTIE -->
 		<xsl:variable name="id" select="./url"/>
-		<xsl:result-document href="{concat(substring-after($id, 'pageId='), '.xhtml')}">
+		<!-- Extraire le pageId pour nommer correctement les fichiers, peu importe le format d'URL -->
+		<xsl:variable name="pageid">
+			<xsl:choose>
+				<!-- Format: ...pageId=XXXXX[#ancre] -->
+				<xsl:when test="contains($id, 'pageId=')">
+					<xsl:variable name="after" select="substring-after($id, 'pageId=')"/>
+					<xsl:choose>
+						<xsl:when test="contains($after, '#')">
+							<xsl:value-of select="substring-before($after, '#')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$after"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<!-- Nouveau format Confluence: .../pages/XXXXX[/Titre] -->
+				<xsl:when test="contains($id, '/pages/')">
+					<xsl:variable name="afterPages" select="substring-after($id, '/pages/')"/>
+					<xsl:choose>
+						<xsl:when test="contains($afterPages, '/')">
+							<xsl:value-of select="substring-before($afterPages, '/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$afterPages"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$id"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<!-- Ne générer le fichier que pour la première occurrence de chaque pageId -->
+		<xsl:if test="generate-id(.) = generate-id(key('pages-by-id', $pageid)[1])">
+			<xsl:result-document href="{concat($pageid, '.xhtml')}">
 			
 			<!-- CONTENU DU FICHIER DE SORTIE -->
 			<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
@@ -125,6 +205,7 @@
 				</body>
 			</html>
 		</xsl:result-document>
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- Enlever les indications concernant le public cible, ex. "(1er cycle)" -->
@@ -191,6 +272,16 @@
 	</xsl:template>	
 	<xsl:function name="exp:traiterLiens">
 		<xsl:param name="href"/>
+		<xsl:variable name="absHref">
+			<xsl:choose>
+				<xsl:when test="starts-with($href, '/')">
+					<xsl:value-of select="concat('https://wiki.umontreal.ca', $href)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$href"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:choose>
 			<!-- Lien interne -->
 			<xsl:when test="starts-with($href, '#')">
@@ -201,12 +292,71 @@
 			<xsl:when test="contains($href, '/pages/viewpage.action?pageId=') and contains($href, '#')">
 				<xsl:variable name="pageid" select="substring-before(substring-after($href, 'pageId='), '#')"/>
 				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
-				<xsl:value-of select="concat($pageid, '.xhtml', '#', $ancre)"/>
+				<xsl:choose>
+					<xsl:when test="exp:page-exists($pageid)">
+						<xsl:value-of select="concat($pageid, '.xhtml', '#', $ancre)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$absHref"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<!-- Lien externe (EPUB) -->
 			<xsl:when test="contains($href, '/pages/viewpage.action?pageId=')">
 				<xsl:variable name="pageid" select="substring-after($href, 'pageId=')"/>
-				<xsl:value-of select="concat($pageid, '.xhtml')"/>
+				<xsl:choose>
+					<xsl:when test="exp:page-exists($pageid)">
+						<xsl:value-of select="concat($pageid, '.xhtml')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$absHref"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<!-- Nouveau format Confluence: /spaces/.../pages/ID[/Titre][#ancre] (relatif ou absolu) avec ancre -->
+			<xsl:when test="contains($href, '/spaces/') and contains($href, '/pages/') and contains($href, '#')">
+				<xsl:variable name="afterPages" select="substring-after($href, '/pages/')"/>
+				<xsl:variable name="pageid">
+					<xsl:choose>
+						<xsl:when test="contains($afterPages, '/')">
+							<xsl:value-of select="substring-before($afterPages, '/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$afterPages"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
+				<xsl:choose>
+					<xsl:when test="exp:page-exists($pageid)">
+						<xsl:value-of select="concat($pageid, '.xhtml', '#', $ancre)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$absHref"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<!-- Nouveau format Confluence: /spaces/.../pages/ID[/Titre] (relatif ou absolu) sans ancre -->
+			<xsl:when test="contains($href, '/spaces/') and contains($href, '/pages/')">
+				<xsl:variable name="afterPages" select="substring-after($href, '/pages/')"/>
+				<xsl:variable name="pageid">
+					<xsl:choose>
+						<xsl:when test="contains($afterPages, '/')">
+							<xsl:value-of select="substring-before($afterPages, '/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$afterPages"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="exp:page-exists($pageid)">
+						<xsl:value-of select="concat($pageid, '.xhtml')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$absHref"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<!-- Lien externe (Wiki) -->
 			<xsl:when test="starts-with($href, '/')">
@@ -215,6 +365,45 @@
 			<!-- Lien externe (Web) -->
 			<xsl:otherwise>
 				<xsl:value-of select="$href"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+
+	<!-- Vérifier si un pageId existe dans le guide courant -->
+	<xsl:function name="exp:page-exists" as="xs:boolean">
+		<xsl:param name="pageid"/>
+		<!-- Utiliser la variante 3-arguments de key() avec la racine document -->
+		<xsl:sequence select="exists(key('pages-by-id', $pageid, $docRoot))"/>
+	</xsl:function>
+
+	<!-- Extraire un pageId à partir d'une URL (formats ?pageId= ou /pages/ID/...) -->
+	<xsl:function name="exp:pageid-from-url" as="xs:string">
+		<xsl:param name="url"/>
+		<xsl:choose>
+			<xsl:when test="contains($url, 'pageId=')">
+				<xsl:variable name="after" select="substring-after($url, 'pageId=')"/>
+				<xsl:choose>
+					<xsl:when test="contains($after, '#')">
+						<xsl:value-of select="substring-before($after, '#')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$after"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="contains($url, '/pages/')">
+				<xsl:variable name="afterPages" select="substring-after($url, '/pages/')"/>
+				<xsl:choose>
+					<xsl:when test="contains($afterPages, '/')">
+						<xsl:value-of select="substring-before($afterPages, '/')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$afterPages"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$url"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
@@ -240,6 +429,11 @@
 	
 	
 	<!-- Traitements génériques -->
+	<!-- Nettoyer les sauts de ligne dans la TdM (ex. "Services de l'EBSI<br/>") pour éviter les titres tronqués dans les lecteurs -->
+	<xsl:template match="br" mode="copy-no-namespaces">
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
 	<xsl:template match="*" mode="copy-no-namespaces">
 		<xsl:element name="{local-name()}">
 			<!--Éliminer certains attributs de Confluence, débutant par "data"-->

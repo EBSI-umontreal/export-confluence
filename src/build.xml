@@ -11,9 +11,9 @@
 		<echo>   Confluence - Migration des guides de l'EBSI en PDF/epub   </echo>
 		<echo>+-----------------------------------------------------------+</echo>
 		<echo> EBSI - Universite de Montreal</echo>
-		<echo> Arnaud d'Alayer 2016-2023</echo>
+		<echo> Arnaud d'Alayer 2016-2025</echo>
 		<echo />
-		<echo> Version : 20230825</echo>
+		<echo> Version : 20251223</echo>
 		<echo>+-----------------------------------------------------------+</echo>
 	</target>
 	
@@ -64,7 +64,7 @@
 			2) remplacer &quote; par &apos;
 			3) remettre les caractères unicodes : ex. &copy; -> ©
 		-->
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33%;font-size: 10pt;&apos;&gt;Guide 1er cycle&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2025-2026&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -77,7 +77,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guide2ecycle.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guide2ecycle.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide de la maîtrise&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33%;font-size: 10pt;&apos;&gt;©EBSI 2025-2026&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -90,7 +90,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidedocto.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidedocto.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide doctorat&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2025-2026&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -103,7 +103,7 @@
 		<property name="epub-output.fichier" value="${dossier-output}/guidepers.epub"/>
 		<property name="epub-template" value="./_templates/guides"/>
 		<property name="pdf-output.fichier" value="${dossier-output}/guidepers.pdf"/>
-		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2024-2025&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
+		<property name="pdf-output.footnote" value="&lt;div&gt; &lt;table style=&apos;width:100%;border-top:1px solid black;margin-top:1em;&apos;&gt;&lt;tr&gt;&lt;td style=&apos;width:33;font-size: 10pt;%&apos;&gt;Guide du personnel&lt;/td&gt;&lt;td style=&apos;width:33%;text-align:center;font-size: 10pt;&apos;&gt;- _PAGENUM_ -&lt;/td&gt;&lt;td style=&apos;text-align:right;width:33;font-size: 10pt;%&apos;&gt;©EBSI 2025-2026&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;/div&gt;"/>
 		<antcall target="exportation"/>
 	</target>
 	
@@ -310,13 +310,19 @@
 	
 	<target name="epub_spine">
 		<echo>ePub : Creation du fichier content.opf</echo>
-		<xslt in="${xml-output}" style="${epub-template}/epub_spine.xsl" out="${epub-output.tempo}/OEBPS/content.opf" force="yes"/>
+		<xslt-saxon9
+			in="${xml-output}"
+			style="${epub-template}/epub_spine.xsl"
+			destdir="${epub-output.tempo}/OEBPS/content.opf"/>
 	</target>
 	
 	
 	<target name="epub_toc">
 		<echo>ePub : Creation du fichier toc.ncx</echo>
-		<xslt in="${xml-output}" style="${epub-template}/epub_toc.xsl" out="${epub-output.tempo}/OEBPS/toc.ncx" force="yes"/>
+		<xslt-saxon9
+			in="${xml-output}"
+			style="${epub-template}/epub_toc.xsl"
+			destdir="${epub-output.tempo}/OEBPS/toc.ncx"/>
 	</target>
 	
 	

@@ -9,6 +9,18 @@
 	
 	<xsl:output method="text" encoding="utf-8" />
 
+	<!-- Clé pour dédoublonner les pages sur le pageId extrait, quel que soit le format d'URL -->
+	<xsl:key name="pages-by-id" match="page" use="
+		if (contains(./url, 'pageId=')) then 
+			let $after := substring-after(./url, 'pageId=')
+			return (if (contains($after, '#')) then substring-before($after, '#') else $after)
+		else if (contains(./url, '/pages/')) then
+			let $afterPages := substring-after(./url, '/pages/')
+			return (if (contains($afterPages, '/')) then substring-before($afterPages, '/') else $afterPages)
+		else 
+			./url
+	"/>
+
 	<xsl:template match="guide">
 			
 			<!-- Produire les pages du guide -->
@@ -33,7 +45,42 @@
 	<xsl:template match="//page[position()>1]">
 		<!-- CRÉATION DU FICHIER DE SORTIE -->
 		<xsl:variable name="id" select="./url"/>
-		<xsl:result-document href="{concat(substring-after($id, 'pageId='), '.md.txt')}">
+		<!-- Extraire le pageId pour nommer correctement les fichiers, peu importe le format d'URL -->
+		<xsl:variable name="pageid">
+			<xsl:choose>
+				<!-- Format: ...pageId=XXXXX[#ancre] -->
+				<xsl:when test="contains($id, 'pageId=')">
+					<xsl:variable name="after" select="substring-after($id, 'pageId=')"/>
+					<xsl:choose>
+						<xsl:when test="contains($after, '#')">
+							<xsl:value-of select="substring-before($after, '#')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$after"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<!-- Nouveau format Confluence: .../pages/XXXXX[/Titre] -->
+				<xsl:when test="contains($id, '/pages/')">
+					<xsl:variable name="afterPages" select="substring-after($id, '/pages/')"/>
+					<xsl:choose>
+						<xsl:when test="contains($afterPages, '/')">
+							<xsl:value-of select="substring-before($afterPages, '/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$afterPages"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$id"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Ne générer le fichier que pour la première occurrence de chaque pageId -->
+		<xsl:if test="generate-id(.) = generate-id(key('pages-by-id', $pageid)[1])">
+			<xsl:result-document href="{concat($pageid, '.md.txt')}">
 			
 			<!-- CONTENU DU FICHIER DE SORTIE -->
 			<xsl:apply-templates select="url" mode="copy-no-namespaces"/>
@@ -42,7 +89,8 @@
 			<xsl:apply-templates select="rubriques"/>
 			<xsl:apply-templates select="bas-de-page"/>
 
-		</xsl:result-document>
+			</xsl:result-document>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="url" mode="copy-no-namespaces">
@@ -90,7 +138,7 @@
 		<xsl:text>[</xsl:text>
 		<xsl:apply-templates select="node()|text()" />
 		<xsl:text>](</xsl:text>
-		<xsl:value-of select="@href" />
+		<xsl:value-of select="exp:traiterLiens(@href)" />
 		<xsl:text>)</xsl:text>
 	</xsl:template>
 	
@@ -111,6 +159,71 @@
 		<xsl:value-of select="." />
 		<xsl:text>`</xsl:text>
 	</xsl:template>
+
+	<!-- Réécriture des liens Confluence vers des href locaux (réutilise la logique EPUB) -->
+	<xsl:function name="exp:traiterLiens">
+		<xsl:param name="href"/>
+		<xsl:choose>
+			<!-- Lien interne -->
+			<xsl:when test="starts-with($href, '#')">
+				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
+				<xsl:value-of select="concat('#', $ancre)"/>
+			</xsl:when>
+			<!-- Lien externe (EPUB) avec ancre -->
+			<xsl:when test="contains($href, '/pages/viewpage.action?pageId=') and contains($href, '#')">
+				<xsl:variable name="pageid" select="substring-before(substring-after($href, 'pageId='), '#')"/>
+				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
+				<xsl:value-of select="concat($pageid, '.xhtml', '#', $ancre)"/>
+			</xsl:when>
+			<!-- Lien externe (EPUB) -->
+			<xsl:when test="contains($href, '/pages/viewpage.action?pageId=')">
+				<xsl:variable name="pageid" select="substring-after($href, 'pageId=')"/>
+				<xsl:value-of select="concat($pageid, '.xhtml')"/>
+			</xsl:when>
+			<!-- Nouveau format Confluence: /spaces/.../pages/ID[/Titre][#ancre] avec ancre -->
+			<xsl:when test="contains($href, '/spaces/') and contains($href, '/pages/') and contains($href, '#')">
+				<xsl:variable name="afterPages" select="substring-after($href, '/pages/')"/>
+				<xsl:variable name="pageid">
+					<xsl:choose>
+						<xsl:when test="contains($afterPages, '/')">
+							<xsl:value-of select="substring-before($afterPages, '/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$afterPages"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="ancre" select="exp:traiterID(substring-after($href, '#'))"/>
+				<xsl:value-of select="concat($pageid, '.xhtml', '#', $ancre)"/>
+			</xsl:when>
+			<!-- Nouveau format Confluence: /spaces/.../pages/ID[/Titre] sans ancre -->
+			<xsl:when test="contains($href, '/spaces/') and contains($href, '/pages/')">
+				<xsl:variable name="afterPages" select="substring-after($href, '/pages/')"/>
+				<xsl:choose>
+					<xsl:when test="contains($afterPages, '/')">
+						<xsl:value-of select="concat(substring-before($afterPages, '/'), '.xhtml')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat($afterPages, '.xhtml')"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<!-- Lien externe (Wiki) -->
+			<xsl:when test="starts-with($href, '/')">
+				<xsl:value-of select="concat('https://wiki.umontreal.ca', $href)"/>
+			</xsl:when>
+			<!-- Lien externe (Web) -->
+			<xsl:otherwise>
+				<xsl:value-of select="$href"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+
+	<!--Traitement des ID de Confluence pour enlever les caractères non valides -->
+	<xsl:function name="exp:traiterID">
+		<xsl:param name="id"/>
+		<xsl:value-of select="replace($id, '[^a-zA-Z0-9. ]', '')"/>
+	</xsl:function>
 	
 	<xsl:template match="br" mode="copy-no-namespaces">
 		<xsl:text>&#xa;</xsl:text>
