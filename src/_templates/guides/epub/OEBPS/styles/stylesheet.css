@@ -1,116 +1,179 @@
-/* -------------------------------
+/* ----------------------------------------------
    Table des matières
-   -------------------------------*/
+   ---------------------------------------------- */
 .table-des-matières ol {
 	counter-reset: item;
 }
 .table-des-matières li {
 	display: block;
-	margin-top : 0;
+	margin: 0;
+	line-height: 1.25;
 }
 .table-des-matières li:before {
 	content: counters(item, ".") " ";
-	counter-increment: item
+	counter-increment: item;
+	color: #0057ac;
+	font-weight: 600;
 }
 
-/* ---------------------------------------------- 
-   GUIDES (EPUB)
-    ---------------------------------------------- */  
+/* If a TOC page starts with an introduction block, push TOC to next page in PDF output. */
+div.rubrique + nav.table-des-matières {
+	break-before: page;
+	page-break-before: always;
+}
+
+/* ----------------------------------------------
+   GUIDES (EPUB/PDF)
+   Palette inspirée du guide de marque UdeM
+   ---------------------------------------------- */
 body {
-    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-    margin : 0.5in;
-    text-align : left;
+	font-family: "Segoe UI", Arial, sans-serif;
+	margin : 0.5in;
+	font-size: 11pt;
+	text-align : left;
+	line-height: 1.55;
+	color: #071d49;
+	background: #ffffff;
 }
-
-table{
-    width: 100%;
-    border-collapse: collapse;
+p, li, td, th, div {
+	font-size: 1em;
 }
-table, th, td {
-    border: 1px solid black;
-}
-th, td{
-    padding : 0.5em;
-}
-th{
-    background-color : rgb(240,240,240);
-    font-weight: bold;
-
-    /*https://stackoverflow.com/questions/11267154/fit-cell-width-to-content*/
-    width:1%;
-    white-space:nowrap;
-}
-
-div, p, td, th, li {
-    font-size: 10pt;
-}
-
-p, li, tr, td {
-	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-	font-size:10pt;
-}
-
 h1, h2, h3, h4{
-    font-weight : bold;
-	font-family: Cambria, Georgia, serif;
-
-    page-break-inside:avoid;
-    page-break-after:avoid;
+	font-family: Georgia, "Times New Roman", serif;
+	font-weight: 700;
+	
+	break-inside: avoid-page;
+	page-break-inside: avoid;
+	break-after: avoid-page;
+	page-break-after: avoid;
+	margin-bottom: 0.35em;
 }
 h1 {
 	text-align: center;
-	font-size:16pt;
-	color:rgb(99,36,35);
+	font-size: 1.7em;
+	color: #0057ac;
+	border-bottom: 2px solid #0057ac;
+	padding-bottom: 0.25em;
+	margin-top: 0;
 }
 h2 {
 	text-align: left;
-	font-size:14pt;
-	color:rgb(148,54,52);
+	font-size: 1.35em;
+	color: #0057ac;
+	margin-top: 1.1em;
 }
 h3 {
 	text-align: left;
-	font-size:12pt;
-	color:rgb(192,80,77);
+	font-size: 1.15em;
+	color: #071d49;
+	margin-top: 1em;
 }
-h4{
+h4 {
 	text-align: left;
-	font-size:12pt;
-    font-style: italic;
+	font-size: 1.05em;
+	color: #071d49;
+	font-style: italic;
+	margin-top: 0.9em;
 }
-h2, h3, p {
-    margin-top:12pt !important;
-}
-
 ul, ol{
-    padding-left : 0.25in;
+	padding-left : 0.25in;
 }
 li{
-    margin-top:8pt;
+	margin: 0.35em 0;
+}
+a {
+	color: #0057ac;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #3f4f88;
+}
+img {
+	max-width: 100%;
+	height: auto;
+}
+table{
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1em 0;
+	page-break-inside: auto;
+}
+table, th, td {
+	border: 1px solid #9fb6d9;
+}
+th, td{
+	padding: 0.2em 0.2em;
+	vertical-align: top;
+	font-size: 11pt !important;
+	font-family: "Segoe UI", Arial, sans-serif !important;
+}
+th{
+	background: #e5f1fa;
+	color: #071d49;
+	font-weight: 700;
+	
+	/*https://stackoverflow.com/questions/11267154/fit-cell-width-to-content*/
+	width:1%;
+	white-space:nowrap;
+}
+td *, th * {
+	font-size: inherit !important;
+	font-family: inherit !important;
+}
+blockquote {
+	margin: 1em 0;
+	padding: 0.7em 0.9em;
+	border-left: 4px solid #0057ac;
+	background: #f4f8fd;
+}
+pre,
+code {
+	font-family: Consolas, "Courier New", monospace;
+	font-size: 0.95em;
+}
+pre {
+	overflow: auto;
+	background: #f4f8fd;
+	border: 1px solid #d8e3f2;
+	padding: 0.7em;
 }
 .bas-de-page {
-    margin-top : 36pt;
+	margin-top: 2.2em;
+	color: #334b75;
+	border-top: 1px solid #d8e3f2;
+	padding-top: 0.9em;
+	break-inside: avoid-page;
+	page-break-inside: avoid;
+}
+.bas-de-page hr {
+	display: none;
 }
 /*==================
   COVER
   ==================*/
 #pageTitre-FAS {
-    font-weight : bold;  
-    font-size: 11pt;
+	font-size: 11pt;
+	font-weight: 700;
 }  
 #pageTitre-EBSI {
-    font-size: 8pt;
+	font-size: 8.5pt;
+	color: #071d49;
+	line-height: 1;
+	display: inline-block;
 }
-#pageTitre-titre  {
-    font-family: Cambria, Georgia, serif;
-    font-size: 24pt;
-    color : #17365D;
-    border-bottom : 2px solid #4F81BD;
-    margin-top : 120px;
-    padding-bottom : 4px;
+#pageTitre-titre {
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 24pt;
+	color: #0057ac;
+	border-bottom: 3px solid #0057ac;
+	margin-top : 120px;
+	padding-bottom : 6px;
 }
 #pageTitre-année {
-    font-family: Cambria,Georgia,serif;
-    font-size: 18pt;
-    color : #17365D;  
-    margin-top : 25px;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 18pt;
+	margin : 0;
+	color: #071d49;
+	margin-top : 25px;
 }

@@ -3,23 +3,26 @@ src/out/*
 src/logs/*
 !src/logs/.gitkeep
 
-src/vendor/ansicon184/*
-!src/vendor/ansicon184/.gitkeep
+src/vendor/ansicon189/*
+!src/vendor/ansicon189/.gitkeep
 
 src/vendor/ant-contrib-1.0b3/*
 !src/vendor/ant-contrib-1.0b3/.gitkeep
 
-src/vendor/apache-ant-1.10.4/*
-!src/vendor/apache-ant-1.10.4/.gitkeep
+src/vendor/apache-ant-1.10.17/*
+!src/vendor/apache-ant-1.10.17/.gitkeep
 
 src/vendor/calibre-portable-3.46/*
 !src/vendor/calibre-portable-3.46/.gitkeep
 
+src/vendor/calibre-portable-8.00/*
+!src/vendor/calibre-portable-8.00/.gitkeep
+
 src/vendor/casperjs-1.1.4-1/*
 !src/vendor/casperjs-1.1.4-1/.gitkeep
 
-src/vendor/jdk8u265-b01/*
-!src/vendor/jdk8u265-b01/.gitkeep
+src/vendor/jdk-25.0.3+9/*
+!src/vendor/jdk-25.0.3+9/.gitkeep
 
 src/vendor/phantomjs-2.1.1-windows/*
 !src/vendor/phantomjs-2.1.1-windows/.gitkeep
